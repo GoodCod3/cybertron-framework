@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, MagicMock
+from unittest.mock import MagicMock, Mock
 
 from core.transformer.transformer_manager_interface import ITransformerManager
 
