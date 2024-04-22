@@ -1,5 +1,6 @@
 from src.core.mapper.mapper_manager_interface import IMapperManager
 
+
 class GlobalMapperManager(IMapperManager):
     """
     Global mapper manager

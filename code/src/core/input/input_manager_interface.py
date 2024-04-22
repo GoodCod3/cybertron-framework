@@ -1,6 +1,7 @@
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 
-class IInputManager():
+
+class IInputManager:
     __metaclass__ = ABCMeta
 
     @abstractmethod

@@ -193,4 +193,3 @@ $ poetry add Flask
 
 ## Update the requirements.txt
 Use the `make freeze-dependencies` command instead `pip freeze`.
-

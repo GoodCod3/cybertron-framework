@@ -1,6 +1,8 @@
 import os
+
 import yaml
 from src.core.environment.environment_interface import IEnvironment
+
 
 class Environment(IEnvironment):
     """
@@ -26,14 +28,16 @@ class Environment(IEnvironment):
         self.environment_variables = environment_variables
 
     def set_configuration_file(self, configuration_file_path):
-        with open(configuration_file_path, 'r') as config_file:
+        with open(configuration_file_path, "r") as config_file:
             self.config_variables = yaml.safe_load(config_file)
 
     def check(self):
         for environment_variable in self.environment_variables:
             value = os.getenv(environment_variable)
             if not value:
-                raise RuntimeError(f"Environment variable not defined: {environment_variable}")
+                raise RuntimeError(
+                    f"Environment variable not defined: {environment_variable}"
+                )
 
     def get_value(self, key):
         if key in self.config_variables:

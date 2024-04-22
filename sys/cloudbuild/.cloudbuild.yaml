@@ -42,4 +42,3 @@ steps:
         gcloud run deploy $_CLOUD_RUN_SERVICE_NAME --image ${_IMAGE_CMS_REPO}:${TAG_NAME} --region $_REGION_NAME --platform managed --project $_PROJECT_ID
     waitFor: ['push-cms']
 timeout: 1200s
-

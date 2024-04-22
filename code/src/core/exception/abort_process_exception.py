@@ -3,10 +3,10 @@ class AbortProcessException(Exception):
     Exception that aborts the process
     """
 
-    def __init__(self, code, message = ""):
-            self.code = code
-            self.message = message
-            super().__init__(self.message)
+    def __init__(self, code, message=""):
+        self.code = code
+        self.message = message
+        super().__init__(self.message)
 
     def set_code(self, code):
         self.code = code

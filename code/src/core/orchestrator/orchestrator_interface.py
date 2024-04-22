@@ -1,6 +1,7 @@
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 
-class IOrchestrator():
+
+class IOrchestrator:
     __metaclass__ = ABCMeta
 
     @abstractmethod

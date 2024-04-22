@@ -1,6 +1,7 @@
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 
-class IOutputManager():
+
+class IOutputManager:
     __metaclass__ = ABCMeta
 
     @abstractmethod

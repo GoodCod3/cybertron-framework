@@ -1,6 +1,5 @@
 from flask import jsonify
 from flask_restful import Resource
-
 from src.app.app_manager import AppManager
 
 

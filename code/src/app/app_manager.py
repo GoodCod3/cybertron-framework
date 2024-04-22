@@ -1,16 +1,15 @@
-from src.core.app_manager_interface import IAppManager
-from src.core.orchestrator.orchestrator_interface import IOrchestrator
-from src.core.environment.environment_interface import IEnvironment
-from src.core.environment.environment import Environment
-from src.app.orchestrator.orchestrator import Orchestrator
-
-from src.app.mapper.global_mapper_manager import GlobalMapperManager
-
 from src.app.input.global_input_manager import GlobalInputManager
-
-from src.app.transformer.global_transformer_manager import GlobalTransformerManager
-
+from src.app.mapper.global_mapper_manager import GlobalMapperManager
+from src.app.orchestrator.orchestrator import Orchestrator
 from src.app.output.global_output_manager import GlobalOutputManager
+from src.app.transformer.global_transformer_manager import (
+    GlobalTransformerManager,
+)
+from src.core.app_manager_interface import IAppManager
+from src.core.environment.environment import Environment
+from src.core.environment.environment_interface import IEnvironment
+from src.core.orchestrator.orchestrator_interface import IOrchestrator
+
 
 class AppManager(IAppManager):
     """
@@ -23,15 +22,19 @@ class AppManager(IAppManager):
 
     def __is_orchestrator(self):
         if not isinstance(self.orchestrator, IOrchestrator):
-            raise TypeError(f"The implemented orchestrator the IOrchestrator interface.")
+            raise TypeError(
+                "The implemented orchestrator the IOrchestrator interface."
+            )
 
     def __check_environment(self):
         if not isinstance(self.environment, IEnvironment):
-            raise TypeError(f"The implemented orchestrator the IOrchestrator interface.")
+            raise TypeError(
+                "The implemented orchestrator the IOrchestrator interface."
+            )
 
         environment_variables = []
         self.environment.set_environment_variables(environment_variables)
-        self.environment.set_configuration_file('./settings.yaml')
+        self.environment.set_configuration_file("./settings.yaml")
         self.environment.check()
 
     def run(self):

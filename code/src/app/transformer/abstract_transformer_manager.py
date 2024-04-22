@@ -1,17 +1,22 @@
 import re
 from datetime import datetime
-from src.core.transformer.transformer_manager_interface import ITransformerManager
+
 from src.core.mapper.mapper_manager_interface import IMapperManager
+from src.core.transformer.transformer_manager_interface import (
+    ITransformerManager,
+)
+
 
 class AbstractTransformerManager(ITransformerManager):
-
     def __init__(self, exclusions):
         self.mapper_manager = None
         self.exclusions = exclusions
 
     def set_mapper_manager(self, mapper_manager):
         if not isinstance(mapper_manager, IMapperManager):
-            raise TypeError(f"The provided MapperManager does not implement the IMapperManager interface.")
+            raise TypeError(
+                "The provided MapperManager does not implement the IMapperManager interface."  # noqa: E501
+            )
 
         self.mapper_manager = mapper_manager
 
@@ -37,7 +42,11 @@ class AbstractTransformerManager(ITransformerManager):
             transformed_data.append(transformed_record)
 
         # Removes duplicates
-        unique_records = list({frozenset(item.items()):item for item in transformed_data}.values())
+        unique_records = list(
+            {
+                frozenset(item.items()): item for item in transformed_data
+            }.values()
+        )
 
         return unique_records
 
@@ -50,7 +59,7 @@ class AbstractTransformerManager(ITransformerManager):
             field_value = exclusion["value"]
             operator = exclusion["operator"]
             if operator == "EQUALS":
-                if  record[field_key] == field_value:
+                if record[field_key] == field_value:
                     return True
             if operator == "DISTINCT":
                 if record[field_key] != field_value:
@@ -83,15 +92,25 @@ class AbstractTransformerManager(ITransformerManager):
         field_name = source["field_name"]
         value = self.__resume_value(record, field_name)
         if not value:
-            return destination["default_value"] if "default_value" in destination else ""
+            return (
+                destination["default_value"]
+                if "default_value" in destination
+                else ""
+            )
 
         field_type = source["type"]
         if field_type == "filter":
-            value = self.__get_filtered_field_value(value, source["filter_definition"])
+            value = self.__get_filtered_field_value(
+                value, source["filter_definition"]
+            )
         else:
             value = self.__get_primitive_value(field_type, value)
             if value == "":
-                return destination["default_value"] if "default_value" in destination else ""
+                return (
+                    destination["default_value"]
+                    if "default_value" in destination
+                    else ""
+                )
 
         return value
 
@@ -121,14 +140,14 @@ class AbstractTransformerManager(ITransformerManager):
         """
         data_skeleton = {}
         for item in mapper:
-            destination = item["destination"]
             data_skeleton[item["destination"]["field_name"]] = ""
 
         return data_skeleton
 
     def __resume_value(self, record, field_name):
         """
-        Resumes the value of an item, that might be a nested value or a plain value
+        Resumes the value of an item, that might be a nested value or a
+        plain value.
         """
         if isinstance(field_name, list):
             return self.__get_nested_field_value(record, field_name)
@@ -161,11 +180,13 @@ class AbstractTransformerManager(ITransformerManager):
         """
         criteria = filter_definition["criteria"]
         for record in collection:
-            filtered_value = record[criteria[0]] if criteria[0] in record else ""
+            filtered_value = (
+                record[criteria[0]] if criteria[0] in record else ""
+            )
             for key in criteria[1:]:
                 try:
                     filtered_value = filtered_value[key]
-                except KeyError as err:
+                except KeyError:
                     filtered_value = ""
                     break
                 except TypeError:
@@ -191,7 +212,7 @@ class AbstractTransformerManager(ITransformerManager):
         if not epoch_date or epoch_date is None:
             return ""
 
-        result = re.search(r'\d+', epoch_date)
+        result = re.search(r"\d+", epoch_date)
         if not result:
             return ""
 
@@ -207,16 +228,22 @@ class AbstractTransformerManager(ITransformerManager):
         """
         Transforms the FTE to a percentage
         """
-        return float(fte) * 100 if fte else ''
+        return float(fte) * 100 if fte else ""
 
-    def __transform_holiday_calendar_description(self, holiday_calendar_description):
+    def __transform_holiday_calendar_description(
+        self, holiday_calendar_description
+    ):
         """
         Transforms the holiday calendar
         """
         pattern = re.compile(" ing calendar", re.IGNORECASE)
-        holiday_calendar_description = pattern.sub(" Ingeniería", holiday_calendar_description)
+        holiday_calendar_description = pattern.sub(
+            " Ingeniería", holiday_calendar_description
+        )
 
         pattern = re.compile(" calendar", re.IGNORECASE)
-        holiday_calendar_description = pattern.sub("", holiday_calendar_description)
+        holiday_calendar_description = pattern.sub(
+            "", holiday_calendar_description
+        )
 
         return holiday_calendar_description

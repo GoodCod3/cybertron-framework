@@ -1,5 +1,6 @@
 import time
 
+
 class Benchmark:
     """
     Performs benchmark of the app's execution

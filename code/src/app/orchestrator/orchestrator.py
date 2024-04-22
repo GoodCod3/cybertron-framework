@@ -1,5 +1,6 @@
 from src.core.orchestrator.abstract_orchestrator import AbstractOrchestrator
 
+
 class Orchestrator(AbstractOrchestrator):
     """
     Application orchestrator
@@ -14,7 +15,9 @@ class Orchestrator(AbstractOrchestrator):
         self.benchmark.start("input")
         input_data = {}
         for i, input_manager_id in enumerate(self.input_manager):
-            self.logger.info(f"-- Input manager {input_manager_id} ({i + 1}/{len(self.input_manager)}).")
+            self.logger.info(
+                f"-- Input manager {input_manager_id} ({i + 1}/{len(self.input_manager)})."  # noqa: E501
+            )
             input_manager = self.input_manager[input_manager_id]
             input_data[input_manager.get_id()] = input_manager.get_data()
         self.elapsed_input = self.benchmark.end("input")
@@ -24,18 +27,28 @@ class Orchestrator(AbstractOrchestrator):
         self.benchmark.start("transform")
         transformed_data = {}
         for i, transformer_manager_id in enumerate(self.transformer_manager):
-            self.logger.info(f"-- Transformer manager {transformer_manager_id} ({i + 1}/{len(self.transformer_manager)}).")
-            transformer_manager = self.transformer_manager[transformer_manager_id]
+            self.logger.info(
+                f"-- Transformer manager {transformer_manager_id} ({i + 1}/{len(self.transformer_manager)})."  # noqa: E501
+            )
+            transformer_manager = self.transformer_manager[
+                transformer_manager_id
+            ]
             mapper_manager = self.mapper_manager[transformer_manager_id]
             transformer_manager.set_mapper_manager(mapper_manager)
-            transformed_data[transformer_manager.get_id()] = transformer_manager.transform(input_data[transformer_manager_id])
+            transformed_data[
+                transformer_manager.get_id()
+            ] = transformer_manager.transform(
+                input_data[transformer_manager_id]
+            )
         self.elapsed_transform = self.benchmark.end("transform")
         self.logger.info("Finished the transformation process.")
 
         self.logger.info("Starting the output process (3/3).")
         self.benchmark.start("output")
         for i, output_manager_id in enumerate(self.output_manager):
-            self.logger.info(f"-- Output manager {output_manager_id} ({i + 1}/{len(self.output_manager)}).")
+            self.logger.info(
+                f"-- Output manager {output_manager_id} ({i + 1}/{len(self.output_manager)})."  # noqa: E501
+            )
             output_manager = self.output_manager[output_manager_id]
             mapper_manager = self.mapper_manager[output_manager_id]
             output_manager.set_mapper_manager(mapper_manager)

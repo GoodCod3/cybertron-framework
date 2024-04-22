@@ -1,4 +1,5 @@
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
+
 
 class IEnvironment:
     """
