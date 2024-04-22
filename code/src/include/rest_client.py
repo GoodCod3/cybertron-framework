@@ -1,5 +1,6 @@
 import requests
 import json
+
 from src.core.helper.logger import Logger
 
 class RestClient:

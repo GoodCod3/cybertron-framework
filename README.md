@@ -4,12 +4,6 @@ Cybertron is a framework intended for retrieving data from one or several reposi
 
 For this purpose, pipelines are defined to manage the different stages of the process.
 
-## Author
-
-Eduardo Martos Gómez <emartos@natiboo.es>.
-
-Feel free to ask any questions or suggestions you may have regarding this framework.
-
 ## Class model
 
 Before we start, please take into account that this framework relies heavily on the interfaces defined in the core.
@@ -175,3 +169,28 @@ There are two entry points that you can rewrite to adapt to your requirements:
 
 1. `cli.py`: The application is run unattended.
 2. `web.py`: A Flask application that runs the application after the execution of an endpoint.
+
+
+# How to develop
+## Execute project in local
+After clone project, just run:
+
+`$ make run`
+
+### Open the localhost
+
+`http://127.0.0.1:5000/version`
+
+### Open Swagger UI
+`http://127.0.0.1:5000/swagger/`
+
+
+# Add new dependencies to the project
+## Add the new dependency with poetry
+```bash
+$ poetry add Flask
+```
+
+## Update the requirements.txt
+Use the `make freeze-dependencies` command instead `pip freeze`.
+

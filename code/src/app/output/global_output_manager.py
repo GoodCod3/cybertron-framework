@@ -1,7 +1,7 @@
 from src.core.environment.environment import Environment
-from src.app.output.abstract_output_manager import AbstractOutputManager
+from src.core.output.output_manager_interface import IOutputManager
 
-class GlobalOutputManager(AbstractOutputManager):
+class GlobalOutputManager(IOutputManager):
 
     def __init__(self):
         environment = Environment()
