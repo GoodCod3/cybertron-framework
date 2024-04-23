@@ -61,11 +61,13 @@ class Orchestrator(AbstractOrchestrator):
             ]
             mapper_manager = self.mapper_manager[transformer_manager_id]
             transformer_manager.set_mapper_manager(mapper_manager)
+
             transformed_data[
                 transformer_manager.get_id()
             ] = transformer_manager.transform(
                 input_data[transformer_manager_id]
             )
+
         self.elapsed_transform = self.benchmark.end("transform")
         self.logger.info("Finished the transformation process.")
 
@@ -74,6 +76,7 @@ class Orchestrator(AbstractOrchestrator):
     def _process_export_data(self, transformed_data: dict):
         self.logger.info("Starting the output process (3/3).")
         self.benchmark.start("output")
+
         for i, output_manager_id in enumerate(self.output_manager):
             self.logger.info(
                 f"-- Output manager {output_manager_id} ({i + 1}/{len(self.output_manager)})."  # noqa: E501
