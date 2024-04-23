@@ -16,7 +16,7 @@ class GlobalOutputManager(IOutputManager):
     def get_id(self):
         return "global"
 
-    def set_mapper(self, mapper_manager: IMapperManager):
+    def set_mapper_manager(self, mapper_manager: IMapperManager):
         pass
 
     def put(self, data: List[dict]):

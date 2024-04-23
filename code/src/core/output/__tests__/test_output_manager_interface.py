@@ -15,7 +15,7 @@ class TestOutputManager(unittest.TestCase):
     def test_fail_set_mapper(self):
         mapper_manager_mock = Mock()
         with self.assertRaises(NotImplementedError):
-            self.manager.set_mapper(mapper_manager_mock)
+            self.manager.set_mapper_manager(mapper_manager_mock)
 
     def test_fail_put(self):
         data = {}
@@ -26,11 +26,11 @@ class TestOutputManager(unittest.TestCase):
         data = {}
         output_mock = MagicMock(spec=IOutputManager)
         output_mock.get_id.return_value = "1"
-        output_mock.set_mapper.return_value = {}
+        output_mock.set_mapper_manager.return_value = {}
         output_mock.put.return_value = {"a": 1}
 
         result_id = output_mock.get_id(data)
-        result_mapper = output_mock.set_mapper(data)
+        result_mapper = output_mock.set_mapper_manager(data)
         result_put = output_mock.put(data)
 
         self.assertEqual(result_id, "1")

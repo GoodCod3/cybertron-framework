@@ -12,7 +12,7 @@ class EntryView(Resource):
     def get(self):
         """
         This is a basic view, it will have to be renamed to adjust it to
-        each project.
+        each project and implement the pipeline.
         ---
         responses:
           200:
@@ -23,24 +23,22 @@ class EntryView(Resource):
 
         logger = Logger()
         app_manager = AppManager()
-        response_content = {} 
+        response_content = {}
         response_status = 200
-        
-        app_manager.run()
-        # try:
-        #     logger.info("Process started.")
 
-        #     response_content = {"response": app_manager.get_summary()}
-        # except NoDataToProcessException as err:
-        #     logger.info(str(err))
-        #     response_status = 204
-        # except AbortProcessException as err:
-        #     logger.critical(str(err), from_exception=True)
-        #     response_status = 500
-        #     response_content = {"response": "KO", "error_message": str(err)}
-        # except Exception as err:
-        #     logger.error(str(err), from_exception=True)
-        #     response_status = 500
-        #     response_content = {"response": "KO", "error_message": str(err)}
+        try:
+            logger.info("Process started.")
+
+            app_manager.run()
+            response_content = {"response": app_manager.get_summary()}
+        except NoDataToProcessException as err:
+            logger.info(str(err))
+
+            response_status = 204
+        except Exception as err:
+            logger.error(str(err), from_exception=True)
+
+            response_status = 500
+            response_content = {"response": "KO", "error_message": str(err)}
 
         return response_content, response_status

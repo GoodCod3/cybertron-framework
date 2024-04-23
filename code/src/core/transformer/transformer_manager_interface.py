@@ -12,7 +12,7 @@ class ITransformerManager:
         raise NotImplementedError
 
     @abstractmethod
-    def set_mapper(self, mapper_manager):
+    def set_mapper_manager(self, mapper_manager):
         """
         Sets the mapper
         """
