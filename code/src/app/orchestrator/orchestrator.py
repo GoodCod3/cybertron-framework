@@ -51,7 +51,7 @@ class Orchestrator(AbstractOrchestrator):
             )
             output_manager = self.output_manager[output_manager_id]
             mapper_manager = self.mapper_manager[output_manager_id]
-            output_manager.set_mapper_manager(mapper_manager)
+            output_manager.set_mapper(mapper_manager)
             output_manager.put(transformed_data[output_manager_id])
         self.elapsed_output = self.benchmark.end("output")
         self.logger.info("Finished the output process.")

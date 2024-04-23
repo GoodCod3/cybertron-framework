@@ -23,20 +23,24 @@ class EntryView(Resource):
 
         logger = Logger()
         app_manager = AppManager()
-        try:
-            logger.info("Process started.")
-            app_manager.run()
+        response_content = {} 
+        response_status = 200
+        
+        app_manager.run()
+        # try:
+        #     logger.info("Process started.")
 
-            return jsonify({"response": app_manager.get_summary()}), 200
-        except NoDataToProcessException as err:
-            logger.info(str(err))
+        #     response_content = {"response": app_manager.get_summary()}
+        # except NoDataToProcessException as err:
+        #     logger.info(str(err))
+        #     response_status = 204
+        # except AbortProcessException as err:
+        #     logger.critical(str(err), from_exception=True)
+        #     response_status = 500
+        #     response_content = {"response": "KO", "error_message": str(err)}
+        # except Exception as err:
+        #     logger.error(str(err), from_exception=True)
+        #     response_status = 500
+        #     response_content = {"response": "KO", "error_message": str(err)}
 
-            return jsonify(), 204
-        except AbortProcessException as err:
-            logger.critical(str(err), True)
-
-            return jsonify({"response": "KO", "error_message": str(err)}), 500
-        except Exception as err:
-            logger.error(str(err), True)
-
-            return jsonify({"response": "KO", "error_message": str(err)}), 500
+        return response_content, response_status
