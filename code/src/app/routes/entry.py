@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from src.app.app_manager import AppManager
+from src.app.routes.first_entry.app_manager import AppManager
 from src.core.helper.logger import Logger
 
 
@@ -22,9 +22,9 @@ class EntryView(Resource):
         response_status = 200
 
         try:
+            app_manager.run()
             logger.info("Process started.")
 
-            app_manager.run()
             response_content = {"response": app_manager.get_summary()}
         except Exception as err:
             logger.error(str(err), from_exception=True)

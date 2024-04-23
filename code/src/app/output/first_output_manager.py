@@ -5,7 +5,7 @@ from src.core.mapper.mapper_manager_interface import IMapperManager
 from src.core.output.output_manager_interface import IOutputManager
 
 
-class GlobalOutputManager(IOutputManager):
+class FirstOutputManager(IOutputManager):
     def __init__(self):
         environment = Environment()
         self.project = environment.get_value("BIGQUERY_PROJECT")

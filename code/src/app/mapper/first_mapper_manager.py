@@ -1,9 +1,9 @@
 from src.core.mapper.mapper_manager_interface import IMapperManager
 
 
-class GlobalMapperManager(IMapperManager):
+class FirstMapperManager(IMapperManager):
     """
-    Global mapper manager
+    Empty mapper manager
     """
 
     DATA_MAPPER = []

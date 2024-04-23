@@ -1,7 +1,7 @@
-from src.app.input.global_input_manager import GlobalInputManager
-from src.app.mapper.global_mapper_manager import GlobalMapperManager
+from src.app.input.first_input_manager import FirstInputManager
+from src.app.mapper.first_mapper_manager import FirstMapperManager
 from src.app.orchestrator.orchestrator import Orchestrator
-from src.app.output.global_output_manager import GlobalOutputManager
+from src.app.output.first_output_manager import FirstOutputManager
 from src.app.transformer.first_transformer_manager import (
     FirstTransformerManager,
 )
@@ -42,13 +42,13 @@ class AppManager(IAppManager):
         self.environment.check()
 
     def run(self):
-        self.orchestrator.set_mapper_manager(GlobalMapperManager())
+        self.orchestrator.set_mapper_manager(FirstMapperManager())
 
-        self.orchestrator.set_input_manager(GlobalInputManager())
+        self.orchestrator.set_input_manager(FirstInputManager())
 
         self.orchestrator.set_transformer_manager(FirstTransformerManager())
 
-        self.orchestrator.set_output_manager(GlobalOutputManager())
+        self.orchestrator.set_output_manager(FirstOutputManager())
 
         self.orchestrator.run()
 

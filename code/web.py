@@ -2,8 +2,9 @@ from flask import Flask
 from flask_restful import Api
 from flask_swagger import swagger
 from flask_swagger_ui import get_swaggerui_blueprint
-from src.app.views.entry import EntryView
-from src.app.views.version import VersionView
+
+from src.app.routes.first_entry.main import MainRoute
+from src.app.routes.version import VersionView
 
 app = Flask(__name__)
 api = Api(app)
@@ -27,7 +28,7 @@ def spec():
     return swag
 
 
-api.add_resource(EntryView, "/")
+api.add_resource(MainRoute, "/")
 api.add_resource(VersionView, "/version")
 
 
