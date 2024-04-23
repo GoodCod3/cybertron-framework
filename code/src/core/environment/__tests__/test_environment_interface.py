@@ -34,8 +34,12 @@ class TestIEnvironment(unittest.TestCase):
         transformer_mock.check.return_value = "3"
         transformer_mock.get_value.return_value = "4"
 
-        result_set_environment_variables = transformer_mock.set_environment_variables()
-        result_set_configuration_file = transformer_mock.set_configuration_file()
+        result_set_environment_variables = (
+            transformer_mock.set_environment_variables()
+        )
+        result_set_configuration_file = (
+            transformer_mock.set_configuration_file()
+        )
         result_check = transformer_mock.check()
         result_get_value = transformer_mock.get_value("a")
 
@@ -43,4 +47,3 @@ class TestIEnvironment(unittest.TestCase):
         self.assertEqual(result_set_configuration_file, "2")
         self.assertEqual(result_check, "3")
         self.assertEqual(result_get_value, "4")
-        

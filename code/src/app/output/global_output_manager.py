@@ -1,8 +1,8 @@
 from typing import List
 
 from src.core.environment.environment import Environment
-from src.core.output.output_manager_interface import IOutputManager
 from src.core.mapper.mapper_manager_interface import IMapperManager
+from src.core.output.output_manager_interface import IOutputManager
 
 
 class GlobalOutputManager(IOutputManager):
