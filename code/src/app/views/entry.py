@@ -1,10 +1,6 @@
-from flask import jsonify
 from flask_restful import Resource
+
 from src.app.app_manager import AppManager
-from src.core.exception.abort_process_exception import AbortProcessException
-from src.core.exception.no_data_to_process_exception import (
-    NoDataToProcessException,
-)
 from src.core.helper.logger import Logger
 
 
@@ -31,10 +27,6 @@ class EntryView(Resource):
 
             app_manager.run()
             response_content = {"response": app_manager.get_summary()}
-        except NoDataToProcessException as err:
-            logger.info(str(err))
-
-            response_status = 204
         except Exception as err:
             logger.error(str(err), from_exception=True)
 

@@ -1,4 +1,3 @@
-from flask import jsonify
 from flask_restful import Resource
 from src.app.app_manager import AppManager
 
@@ -17,4 +16,4 @@ class VersionView(Resource):
 
         app_manager = AppManager()
 
-        return jsonify({"response": app_manager.get_version()}), 200
+        return {"response": app_manager.get_version()}
