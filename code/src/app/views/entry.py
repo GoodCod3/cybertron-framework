@@ -1,5 +1,4 @@
 from flask_restful import Resource
-
 from src.app.app_manager import AppManager
 from src.core.helper.logger import Logger
 

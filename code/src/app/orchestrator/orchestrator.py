@@ -18,9 +18,9 @@ class Orchestrator(AbstractOrchestrator):
         input_data = self._process_input_process()
 
         transformed_data = self._process_data_transformation(input_data)
-        
+
         self._process_export_data(transformed_data)
-        
+
         self.elapsed_total = self.benchmark.end("total")
 
     def _process_input_process(self):
@@ -43,7 +43,7 @@ class Orchestrator(AbstractOrchestrator):
 
         return input_data
 
-    def _process_data_transformation(self, input_data:dict):
+    def _process_data_transformation(self, input_data: dict):
         """
         In this stage, all the information downloaded into the Input
         is transformed and a new list of data is generated.
@@ -61,17 +61,17 @@ class Orchestrator(AbstractOrchestrator):
             ]
             mapper_manager = self.mapper_manager[transformer_manager_id]
             transformer_manager.set_mapper_manager(mapper_manager)
-            transformed_data[transformer_manager.get_id()] = (
-                transformer_manager.transform(
-                    input_data[transformer_manager_id]
-                )
+            transformed_data[
+                transformer_manager.get_id()
+            ] = transformer_manager.transform(
+                input_data[transformer_manager_id]
             )
         self.elapsed_transform = self.benchmark.end("transform")
         self.logger.info("Finished the transformation process.")
 
         return transformed_data
-    
-    def _process_export_data(self, transformed_data:dict):
+
+    def _process_export_data(self, transformed_data: dict):
         self.logger.info("Starting the output process (3/3).")
         self.benchmark.start("output")
         for i, output_manager_id in enumerate(self.output_manager):
@@ -80,10 +80,10 @@ class Orchestrator(AbstractOrchestrator):
             )
             output_manager = self.output_manager[output_manager_id]
             mapper_manager = self.mapper_manager[output_manager_id]
-        
+
             output_manager.set_mapper_manager(mapper_manager)
             output_manager.put(transformed_data[output_manager_id])
-        
+
         self.elapsed_output = self.benchmark.end("output")
         self.logger.info("Finished the output process.")
 

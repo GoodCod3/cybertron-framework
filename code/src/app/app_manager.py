@@ -10,7 +10,6 @@ from src.core.environment.environment import Environment
 from src.core.environment.environment_interface import IEnvironment
 from src.core.orchestrator.orchestrator_interface import IOrchestrator
 
-
 # Set the list of enviroment variables for the project
 ENVIRONMENT_VARIABLES = []
 
