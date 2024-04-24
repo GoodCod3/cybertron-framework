@@ -188,5 +188,17 @@ After clone project, just run:
 $ poetry add Flask
 ```
 
+## Updating pip requirements.txt and update pip dependencies
+After add the new poetry dependency we need to execute
+```bash
+$ make freeze-dependencies
+```
+This will update the `requirements.txt` inside `code` folder.
+And now we can execute
+```bash
+$ pip install -r code/requirements.txt
+```
+to update local dependencies
+
 ## Update the requirements.txt
 Use the `make freeze-dependencies` command instead `pip freeze`.
