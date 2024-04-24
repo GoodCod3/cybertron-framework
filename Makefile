@@ -26,5 +26,5 @@ freeze-dependencies:
 	poetry export -f requirements.txt --output code/requirements.txt --without-hashes
 
 coverage:
-	poetry run coverage run -m  unittest discover code/ "test_*.py"
+	poetry run coverage run -m  unittest discover code/src/ "test_*.py"
 	poetry run coverage html --omit="*/__tests__/*,*/__init__*"
