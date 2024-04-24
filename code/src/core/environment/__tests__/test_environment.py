@@ -1,6 +1,6 @@
 import unittest
 from code.test_setup import *  # noqa: F401, F403
-from unittest.mock import mock_open, patch
+from unittest.mock import Mock, mock_open, patch
 
 from core.environment.environment import Environment
 
@@ -43,10 +43,8 @@ class TestEnvironmentManager(unittest.TestCase):
             "Environment variable not defined: VAR1" in str(context.exception)
         )
 
-    @patch("os.getenv")
-    def test_get_value_returns_value_from_config_variables_if_key_exists(
-        self, mock_getenv
-    ):
+    @patch("os.getenv", new=Mock())
+    def test_get_value_returns_value_from_config_variables_if_key_exists(self):
         self.environment.config_variables = {"key": "value"}
 
         self.assertEqual(self.environment.get_value("key"), "value")
