@@ -1,5 +1,4 @@
 from flask_restful import Resource
-
 from src.core.environment.environment import Environment
 from src.core.environment.environment_interface import IEnvironment
 from src.core.helper.logger import Logger
@@ -32,4 +31,3 @@ class OrchestratorBaseView(Resource):
         self.environment.set_environment_variables(ENVIRONMENT_VARIABLES)
         self.environment.set_configuration_file("./settings.yaml")
         self.environment.check()
-
