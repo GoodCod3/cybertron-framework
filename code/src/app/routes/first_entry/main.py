@@ -5,6 +5,11 @@ from src.core.helper.logger import Logger
 
 
 class MainRoute(Resource):
+    def __init__(self) -> None:
+        super().__init__()
+        self.logger = Logger()
+        self.app_manager = AppManager()
+        
     def get(self):
         """
         This is a basic view, it will have to be renamed to adjust it to
@@ -16,19 +21,15 @@ class MainRoute(Resource):
             schema:
               type: string
         """
-
-        logger = Logger()
-        app_manager = AppManager()
-        response_content = {}
         response_status = 200
 
         try:
-            app_manager.run()
-            logger.info("Process started.")
+            self.app_manager.run()
+            self.logger.info("Process started.")
 
-            response_content = {"response": app_manager.get_summary()}
+            response_content = {"response": self.app_manager.get_summary()}
         except Exception as err:
-            logger.error(str(err), from_exception=True)
+            self.logger.error(str(err), from_exception=True)
 
             response_status = 500
             response_content = {"response": "KO", "error_message": str(err)}
