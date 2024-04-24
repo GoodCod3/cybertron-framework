@@ -2,7 +2,7 @@ import unittest
 from code.test_setup import *  # noqa: F401, F403
 from unittest.mock import MagicMock
 
-from src.app.routes.first_entry.orchestrator.orchestrator import Orchestrator
+from src.core.orchestrator.types.synchronous import Orchestrator
 from src.core.input.input_manager_interface import IInputManager
 from src.core.mapper.mapper_manager_interface import IMapperManager
 from src.core.output.output_manager_interface import IOutputManager

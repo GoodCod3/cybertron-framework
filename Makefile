@@ -8,7 +8,7 @@ test:
 	poetry run ${PYTHON} -m unittest discover code/src/ "test_*.py"
 
 test-unique:
-	poetry run ${PYTHON} -m unittest discover code/src/ "test_first_entry_orchestrator.py"
+	poetry run ${PYTHON} -m unittest discover code/src/ "test_synchronous.py"
 
 lint:
 	poetry run flake8

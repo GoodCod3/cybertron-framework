@@ -1,5 +1,3 @@
-from code.test_setup import *  # noqa: F401, F403
-
 from src.core.helper.benchmark import Benchmark
 from src.core.helper.logger import Logger
 from src.core.input.input_manager_interface import IInputManager

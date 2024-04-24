@@ -20,8 +20,8 @@ class Environment(IEnvironment):
         return cls._instance
 
     def __init__(self):
-        self.environment_variables = []
-        self.config_variables = {}
+        self.environment_variables = getattr(self, "environment_variables", [])
+        self.config_variables = getattr(self, "config_variables", {})
 
         if self._instance is not None:
             return

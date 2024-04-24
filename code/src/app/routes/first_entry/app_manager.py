@@ -4,7 +4,6 @@ from src.app.routes.first_entry.input.first_input_manager import (
 from src.app.routes.first_entry.mapper.first_mapper_manager import (
     FirstMapperManager,
 )
-from src.app.routes.first_entry.orchestrator.orchestrator import Orchestrator
 from src.app.routes.first_entry.output.first_output_manager import (
     FirstOutputManager,
 )
@@ -15,6 +14,9 @@ from src.core.app_manager_interface import IAppManager
 from src.core.environment.environment import Environment
 from src.core.environment.environment_interface import IEnvironment
 from src.core.orchestrator.orchestrator_interface import IOrchestrator
+
+# from src.app.routes.first_entry.orchestrator.orchestrator import Orchestrator
+from src.core.orchestrator.types.synchronous import Orchestrator
 
 # Set the list of enviroment variables for the project
 ENVIRONMENT_VARIABLES = []
@@ -57,9 +59,6 @@ class AppManager(IAppManager):
         self.orchestrator.set_output_manager(FirstOutputManager())
 
         self.orchestrator.run()
-
-    def get_version(self):
-        return self.environment.get_value("VERSION")
 
     def get_summary(self):
         return self.orchestrator.get_summary()
