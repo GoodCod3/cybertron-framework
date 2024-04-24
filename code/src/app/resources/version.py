@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from src.app.routes.first_entry.app_manager import AppManager
+from src.app.resources.first_entry.app_manager import AppManager
 
 
 class VersionView(Resource):
