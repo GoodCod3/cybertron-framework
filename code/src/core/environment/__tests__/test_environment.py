@@ -1,5 +1,5 @@
 import unittest
-from code.test_setup import *
+from code.test_setup import *  # noqa: F401, F403
 from unittest.mock import mock_open, patch
 
 from core.environment.environment import Environment
@@ -60,7 +60,7 @@ class TestEnvironmentManager(unittest.TestCase):
 
         self.assertEqual(self.environment.get_value("key"), "value")
 
-    def test_get_value_returns_none_if_key_does_not_exist_in_config_or_environment_variables(
+    def test_get_value_returns_none_if_key_does_not_exist_in_config_or_environment_variables(  # noqa: E501
         self,
     ):
         self.assertEqual(self.environment.get_value("nonexistent_key"), None)

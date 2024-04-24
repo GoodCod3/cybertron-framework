@@ -20,7 +20,7 @@ class Environment(IEnvironment):
     def __init__(self):
         self.environment_variables = []
         self.config_variables = {}
-        
+
         if self._instance is not None:
             return
 
