@@ -1,8 +1,7 @@
-from flask_restful import Resource
-from src.app.resources.first_entry.app_manager import AppManager
+from src.app.resources.orchestrator_base_view import OrchestratorBaseView
 
 
-class VersionView(Resource):
+class VersionView(OrchestratorBaseView):
     def get(self):
         """
         This view returns the current version of the application.
@@ -14,6 +13,6 @@ class VersionView(Resource):
               type: string
         """
 
-        app_manager = AppManager()
-
-        return {"response": app_manager.get_version()}
+        return {
+            "response": self.environment.get_value("VERSION"),
+        }
