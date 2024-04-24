@@ -48,11 +48,11 @@ class AppManager(IAppManager):
         self.environment.check()
 
     def run(self):
-        self.orchestrator.set_mapper_manager(FirstMapperManager())
-
         self.orchestrator.set_input_manager(FirstInputManager())
 
         self.orchestrator.set_transformer_manager(FirstTransformerManager())
+
+        self.orchestrator.set_mapper_manager(FirstMapperManager())
 
         self.orchestrator.set_output_manager(FirstOutputManager())
 
