@@ -1,13 +1,14 @@
 import unittest
-from unittest.mock import MagicMock
 from code.test_setup import *  # noqa: F401, F403
+from unittest.mock import MagicMock
+
+from src.app.routes.first_entry.orchestrator.orchestrator import Orchestrator
+from src.core.input.input_manager_interface import IInputManager
+from src.core.mapper.mapper_manager_interface import IMapperManager
 from src.core.output.output_manager_interface import IOutputManager
 from src.core.transformer.transformer_manager_interface import (
     ITransformerManager,
 )
-from src.core.mapper.mapper_manager_interface import IMapperManager
-from src.app.routes.first_entry.orchestrator.orchestrator import Orchestrator
-from src.core.input.input_manager_interface import IInputManager
 
 
 class TestOrchestrator(unittest.TestCase):
@@ -159,7 +160,7 @@ class TestOrchestrator(unittest.TestCase):
         self.mock_mapper_manager.get_id.return_value = "pipeline_unique_id"
         self.mock_mapper_manager.get.return_value = []
 
-        # Setting up orchestrator without output 
+        # Setting up orchestrator without output
         self.orchestrator.set_input_manager(self.mock_input_manager)
         self.orchestrator.set_transformer_manager(
             self.mock_transformer_manager
@@ -169,11 +170,12 @@ class TestOrchestrator(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.orchestrator.run()
 
-
     def test_fail_when_step_input_has_not_get_data_method(self):
         # Mocking input data
         self.mock_input_manager.get_id.return_value = "pipeline_unique_id"
-        self.mock_input_manager.get_data.side_effect = AttributeError("Mock has no attribute 'get_data'")
+        self.mock_input_manager.get_data.side_effect = AttributeError(
+            "Mock has no attribute 'get_data'"
+        )
 
         # Mocking transformed data
         transformed_data = {"pipeline_unique_id": "transformed_data"}
