@@ -18,11 +18,11 @@ class Environment(IEnvironment):
         return cls._instance
 
     def __init__(self):
+        self.environment_variables = []
+        self.config_variables = {}
+        
         if self._instance is not None:
             return
-
-        self.environment_variables = None
-        self.config_variables = None
 
     def set_environment_variables(self, environment_variables):
         self.environment_variables = environment_variables

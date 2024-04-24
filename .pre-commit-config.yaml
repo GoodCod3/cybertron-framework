@@ -15,8 +15,7 @@ repos:
     hooks:
       - id: isort
         args:
-          - .
-          - --lines_between_types=2
+          - --src=.
 
   - repo: https://github.com/psf/black
     rev: stable

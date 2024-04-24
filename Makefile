@@ -7,6 +7,9 @@ run:
 test:
 	poetry run ${PYTHON} -m unittest discover code/src/ "test_*.py"
 
+test-unique:
+	poetry run ${PYTHON} -m unittest discover code/src/ "test_environment.py"
+
 lint:
 	poetry run flake8
 
