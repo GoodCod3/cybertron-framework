@@ -1,14 +1,20 @@
+from src.app.routes.first_entry.input.first_input_manager import (
+    FirstInputManager,
+)
+from src.app.routes.first_entry.mapper.first_mapper_manager import (
+    FirstMapperManager,
+)
+from src.app.routes.first_entry.orchestrator.orchestrator import Orchestrator
+from src.app.routes.first_entry.output.first_output_manager import (
+    FirstOutputManager,
+)
+from src.app.routes.first_entry.transformer.first_transformer_manager import (
+    FirstTransformerManager,
+)
 from src.core.app_manager_interface import IAppManager
 from src.core.environment.environment import Environment
 from src.core.environment.environment_interface import IEnvironment
 from src.core.orchestrator.orchestrator_interface import IOrchestrator
-from src.app.routes.first_entry.input.first_input_manager import FirstInputManager
-from src.app.routes.first_entry.mapper.first_mapper_manager import FirstMapperManager
-from src.app.routes.first_entry.orchestrator.orchestrator import Orchestrator
-from src.app.routes.first_entry.output.first_output_manager import FirstOutputManager
-from src.app.routes.first_entry.transformer.first_transformer_manager import (
-    FirstTransformerManager,
-)
 
 # Set the list of enviroment variables for the project
 ENVIRONMENT_VARIABLES = []

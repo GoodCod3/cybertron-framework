@@ -1,4 +1,5 @@
 from code.src.app.routes.first_entry.app_manager import AppManager
+
 from src.core.exception.abort_process_exception import AbortProcessException
 from src.core.exception.no_data_to_process_exception import (
     NoDataToProcessException,

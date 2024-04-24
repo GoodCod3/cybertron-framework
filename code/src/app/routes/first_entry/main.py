@@ -1,5 +1,4 @@
 from flask_restful import Resource
-
 from src.app.routes.first_entry.app_manager import AppManager
 from src.core.helper.logger import Logger
 
@@ -9,7 +8,7 @@ class MainRoute(Resource):
         super().__init__()
         self.logger = Logger()
         self.app_manager = AppManager()
-        
+
     def get(self):
         """
         This is a basic view, it will have to be renamed to adjust it to
