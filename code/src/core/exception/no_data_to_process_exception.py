@@ -8,4 +8,4 @@ class NoDataToProcessException(Exception):
         super().__init__(self.message)
 
     def get_message(self):
-        return self.code
+        return self.message

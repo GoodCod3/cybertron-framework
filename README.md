@@ -165,11 +165,8 @@ When you have a nested structure, you can point it like this: `"field_name": ["e
 
 ## Entry points
 
-There are two entry points that you can rewrite to adapt to your requirements:
-
-1. `cli.py`: The application is run unattended.
-2. `web.py`: A Flask application that runs the application after the execution of an endpoint.
-
+There are one entry point that you can rewrite to adapt to your requirements:
+1. `web.py`: A Flask application that runs the application after the execution of an endpoint.
 
 # How to develop
 ## Execute project in local
