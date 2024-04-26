@@ -153,7 +153,8 @@ class FirstOutputManager(IOutputManager):
 
 ```
 
-> We call the set of **Input + Transformer + Output**  "Pipeline", and normally are executed in that order.
+**NOTE** ```We call the set of **Input + Transformer + Output**  "Pipeline", and normally are executed in that order.```
+
 ---
 
 #### orchestrator folder (Optional folder)
@@ -199,22 +200,20 @@ class Orchestrator(AbstractOrchestrator):
 
     def _process_input_process(self):
         """
-        In this stage all the Input information will be downloaded.
+		Here we will have the logic to execute the first step of the pipeline to download data.
         """
-        # Here we will have the logic to execute the first step of the pipeline to download data.
 		return input_data
 
     def _process_data_transformation(self, input_data: dict):
         """
-        In this stage, all the information downloaded into the Input
-        is transformed and a new list of data is generated.
+        Here we will have to execute the transformer corresponding to the information generated in the previous step. (We must compare the value of the "get_id" method of each step to know which one it corresponds to.
         """
-        # Here we will have to execute the transformer corresponding to the information generated in the previous step. (We must compare the value of the "get_id" method of each step to know which one it corresponds to.
-
         return transformed_data
 
     def _process_export_data(self, transformed_data: dict):
-        # Here we receive all the transformed information from all the pipelines and we can execute the output corresponding to each pipeline.
+		"""
+        Here we receive all the transformed data from all the pipelines and we can execute the output corresponding to each pipeline (Export to Bigquery, Postgres, Pub/Sub, etc...).
+        """
 		pass
 
     def get_summary(self):
