@@ -155,6 +155,79 @@ class FirstOutputManager(IOutputManager):
 
 **NOTE** ```We call the set of **Input + Transformer + Output**  "Pipeline", and normally are executed in that order.```
 
+---
+
+#### orchestrator folder (Optional folder)
+**This directory is optional**, not all endpoints will have this directory. We will only create it when we want to modify the orchestrator and thus specify a new pipeline flow.
+
+This class must implement the `from core.orchestrator.abstract_orchestrator import AbstractOrchestrator` interface and implement the following methods:
+
+* **set_input_manager**: This method allows us to specify the transforms that we are going to register in the pipeline.
+
+* **set_transformer_manager**: This method allows us to specify the data transformer class that we are going to register in the pipeline.
+
+* **set_output_manager**: This method allows us to specify the output class of the pipeline.
+
+* **run**: This method must have the logic of how the pipeline will be executed, what is the order of the steps, and where we must execute the corresponding methods of each step, etc...
+
+* **get_summary**: We use this method to have a result after the "run" method finishes executing. Execution times can be recorded to know how long it takes to execute each step of the pipeline and a total computing time to return in this method or a simple success to know that the process has finished.
+
+```python
+from src.core.orchestrator.abstract_orchestrator import AbstractOrchestrator
+
+
+class Orchestrator(AbstractOrchestrator):
+    """
+    Application orchestrator
+    """
+
+    def run(self):
+        """
+        Main method that will execute all the stages of the pipeline.
+        (Input, Transformer, Output/Export)
+        """
+        super().is_initialized()
+
+        self.benchmark.start("total")
+
+        input_data = self._process_input_process()
+
+        transformed_data = self._process_data_transformation(input_data)
+
+        self._process_export_data(transformed_data)
+
+        self.elapsed_total = self.benchmark.end("total")
+
+    def _process_input_process(self):
+        """
+		Here we will have the logic to execute the first step of the pipeline to download data.
+        """
+		return input_data
+
+    def _process_data_transformation(self, input_data: dict):
+        """
+        Here we will have to execute the transformer corresponding to the information generated in the previous step. (We must compare the value of the "get_id" method of each step to know which one it corresponds to.
+        """
+        return transformed_data
+
+    def _process_export_data(self, transformed_data: dict):
+		"""
+        Here we receive all the transformed data from all the pipelines and we can execute the output corresponding to each pipeline (Export to Bigquery, Postgres, Pub/Sub, etc...).
+        """
+		pass
+
+    def get_summary(self):
+        return {
+            "elapsed_total": self.elapsed_total,
+            "elapsed_input": self.elapsed_input,
+            "elapsed_transform": self.elapsed_transform,
+            "elapsed_output": self.elapsed_output,
+        }
+
+```
+---
+
+
 #### main.py (Running the flask endpoint)
 Here we will find a class that inherits from the base class of the project (`from src.app.resources.base_view import BaseView`)
 which offers us two main attributes:
@@ -230,78 +303,6 @@ class MainRoute(BaseView):
         return response_content, response_status
 
 ```
----
-
-#### orchestrator folder (Optional folder)
-**This directory is optional**, not all endpoints will have this directory. We will only create it when we want to modify the orchestrator and thus specify a new pipeline flow.
-
-This class must implement the `from core.orchestrator.abstract_orchestrator import AbstractOrchestrator` interface and implement the following methods:
-
-* **set_input_manager**: This method allows us to specify the transforms that we are going to register in the pipeline.
-
-* **set_transformer_manager**: This method allows us to specify the data transformer class that we are going to register in the pipeline.
-
-* **set_output_manager**: This method allows us to specify the output class of the pipeline.
-
-* **run**: This method must have the logic of how the pipeline will be executed, what is the order of the steps, and where we must execute the corresponding methods of each step, etc...
-
-* **get_summary**: We use this method to have a result after the "run" method finishes executing. Execution times can be recorded to know how long it takes to execute each step of the pipeline and a total computing time to return in this method or a simple success to know that the process has finished.
-
-```python
-from src.core.orchestrator.abstract_orchestrator import AbstractOrchestrator
-
-
-class Orchestrator(AbstractOrchestrator):
-    """
-    Application orchestrator
-    """
-
-    def run(self):
-        """
-        Main method that will execute all the stages of the pipeline.
-        (Input, Transformer, Output/Export)
-        """
-        super().is_initialized()
-
-        self.benchmark.start("total")
-
-        input_data = self._process_input_process()
-
-        transformed_data = self._process_data_transformation(input_data)
-
-        self._process_export_data(transformed_data)
-
-        self.elapsed_total = self.benchmark.end("total")
-
-    def _process_input_process(self):
-        """
-		Here we will have the logic to execute the first step of the pipeline to download data.
-        """
-		return input_data
-
-    def _process_data_transformation(self, input_data: dict):
-        """
-        Here we will have to execute the transformer corresponding to the information generated in the previous step. (We must compare the value of the "get_id" method of each step to know which one it corresponds to.
-        """
-        return transformed_data
-
-    def _process_export_data(self, transformed_data: dict):
-		"""
-        Here we receive all the transformed data from all the pipelines and we can execute the output corresponding to each pipeline (Export to Bigquery, Postgres, Pub/Sub, etc...).
-        """
-		pass
-
-    def get_summary(self):
-        return {
-            "elapsed_total": self.elapsed_total,
-            "elapsed_input": self.elapsed_input,
-            "elapsed_transform": self.elapsed_transform,
-            "elapsed_output": self.elapsed_output,
-        }
-
-```
----
-
 
 ## Entry points
 There are one entry point that you can rewrite to adapt to your requirements:
