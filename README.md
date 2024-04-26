@@ -45,7 +45,7 @@ Each endpoint of the flask application would have its own process or set of pipe
 
 
 ## Project structure
-Each Flask project will have two main directories:
+Each Flask project will have two main directories (`app` & `core`)
 
 ### app
 It is where we will have each of the endpoints of our application and where we can define generic steps for our pipelines.
