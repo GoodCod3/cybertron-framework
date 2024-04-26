@@ -1,7 +1,6 @@
 from src.core.helper.benchmark import Benchmark
 from src.core.helper.logger import Logger
 from src.core.input.input_manager_interface import IInputManager
-from src.core.mapper.mapper_manager_interface import IMapperManager
 from src.core.orchestrator.orchestrator_interface import IOrchestrator
 from src.core.output.output_manager_interface import IOutputManager
 from src.core.transformer.transformer_manager_interface import (
@@ -27,25 +26,12 @@ class AbstractOrchestrator(IOrchestrator):
         self.elapsed_output = 0
 
     def is_initialized(self):
-        if self.mapper_manager is None:
-            raise RuntimeError("No MapperManager defined.")
         if self.input_manager is None:
             raise RuntimeError("No InputManager defined.")
         if self.transformer_manager is None:
             raise RuntimeError("No TransformerManager defined.")
         if self.output_manager is None:
             raise RuntimeError("No OutputManager defined.")
-
-    def set_mapper_manager(self, mapper_manager):
-        if not isinstance(mapper_manager, IMapperManager):
-            raise TypeError(
-                "The provided MapperManager does not implement the IMapperManager interface."  # noqa: E501
-            )
-
-        if self.mapper_manager is None:
-            self.mapper_manager = {}
-
-        self.mapper_manager[mapper_manager.get_id()] = mapper_manager
 
     def set_input_manager(self, input_manager):
         if not isinstance(input_manager, IInputManager):

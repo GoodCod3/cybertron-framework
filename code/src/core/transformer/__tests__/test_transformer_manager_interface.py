@@ -12,10 +12,6 @@ class TestTransformerManager(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             self.manager.get_id()
 
-    def test_fail_set_mapper(self):
-        mapper_manager_mock = Mock()
-        with self.assertRaises(NotImplementedError):
-            self.manager.set_mapper_manager(mapper_manager_mock)
 
     def test_fail_transform(self):
         data = {}
@@ -26,11 +22,9 @@ class TestTransformerManager(unittest.TestCase):
         data = {}
         transformer_mock = MagicMock(spec=ITransformerManager)
         transformer_mock.get_id.return_value = "1"
-        transformer_mock.set_mapper_manager.return_value = {}
         transformer_mock.transform.return_value = {"a": 1}
 
         result_id = transformer_mock.get_id(data)
-        result_mapper = transformer_mock.set_mapper_manager(data)
         result_transform = transformer_mock.transform(data)
 
         self.assertEqual(result_id, "1")

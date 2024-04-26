@@ -1,204 +1,292 @@
 # Cybertron: Transformation framework
-
 Cybertron is a framework intended for retrieving data from one or several repositories, transforming it, and storing in output repositories.
-
 For this purpose, pipelines are defined to manage the different stages of the process.
 
-## Class model
+## Pipeline
+A pipeline refers to a series of steps (`Input`, `Transform`, `Mapper` and `Output`). Each process can have 1 or many pipelines and the orchestrator will decide how they will be executed.
 
-Before we start, please take into account that this framework relies heavily on the interfaces defined in the core.
-When creating new functionalities, you should implement these interfaces to make sure that the pieces are correctly aligned
-and the classes exposes the expected methods.
+## Orchestrator
+It is responsible for executing the different steps of each pipeline. The core defines different types of orchestrator that can be imported from our code to specify how the steps of each process or set of pipelines will be executed.
 
-## Project structure
+### We have different types of orchestrators
+#### Synchronous
+The same process can have 1 or more pipeline defined, when it is executed it will do so sequentially, executing the same step for each pipeline. That is, first it will execute the Input of all the pipelines, then the transform together with the mapper of each pipeline and finally the output of each pipeline.
 
-There are three main folders:
+---
 
-- **app:** Contains the classes that model your application.
-  - **input:** Contains the _input_ classes. These classes have to be created for each project.
-  - **mapper:** Contains the _mapper_ classes. These classes have to be created for each project.
-  - **transformer:** Contains the _transformer_ classes. These classes have to be created for each project.
-  - **output:** Contains the _output_ classes. These classes have to be created for each project.
-  - **orchestrator:** Contains the _orchestrator_ class. This class can be adapted for each project, but can be used as is.
-- **core:** Contains the framework classes, that you should not modify.
-  - **input:** Contains the _input_ interface.
-  - **mapper:** Contains the _mapper_ interface.
-  - **transformer:** Contains the _transformer_ interface.
-  - **output:** Contains the _output_ interface.
-  - **environment:** Contains the _environment_ service, which reads the environment variables and the configuration variables defined in the settings.yml file, and provides a common interface to manage them all.
-  - **exception:** Contains generic exceptions.
-  - **helper:** Contains generic services, such as a benchmark service and the logger.
-  - **orchestrator:** Contains the _orchestrator_ interface, as well as abstract methods.
-- **include:** Contains the connectors (i.e. BigQuery client, SuccessFactors client, SAP client, etc.).
 
-## Process' stages
+## Pipeline stages
 
 There are three different stages in the process:
 
-1. **Input.** The data is queried from the input repository and stored in memory.
-   Alternatively, the input data can be queried and processed record by record,
-   but it requires modifying the default orchestrator (see the _Orchestrator_ section below).
-2. **Transformation.** The data is transformed following rules defined in the mapper (see the _Mapper_ section below).
-   These rules are coded in a special class that provides generic transformations out-of-the-box.
-3. **Output.** The data is stored in the desired repository according to the structure defined in the mapper.
+1.  **Input.** The data is queried from the input repository and stored in memory.
+
+Alternatively, the input data can be queried and processed record by record,
+
+but it requires modifying the default orchestrator (see the _Orchestrator_ section below).
+
+
+2.  **Transformation.** The information is transformed to send it to the output
+
+
+3.  **Output.** The information is received transformed ready to be processed or saved in some external source (Bigquey, DB, Pub/Sub, etc...)
+
 
 The workflow is modelled in the _Orchestrator_ class, that we will see in detail later.
 
-## Modelling a new pipeline
+---
 
-A pipeline is the combination of the three stages that form a workflow, plus the mapper. In other words, an input, a mapper, a transformer, and an output.
+# Class model
+Before we start, please take into account that this framework relies heavily on the interfaces defined in the core.
 
-To model a new pipeline, you have to follow these steps:
+When creating new functionalities, you should implement these interfaces to make sure that the pieces are correctly aligned and the classes exposes the expected methods.
 
-1. Include the classes in `app/app_manager.py`:
+Each endpoint of the flask application would have its own process or set of pipelines that will be executed by the selected orchestrator and must implement each layer of the pipeline that will be explained below.
+  
+
+## Project structure
+Each Flask project will have two main directories:
+
+### app
+It is where we will have each of the endpoints of our application and where we can define generic steps for our pipelines.
+Each endpoint will have its own directory where the different classes that belong to each step of the pipeline will be defined.
+
+-  **app:** It is where we will have each of the endpoints of our application and where we can define generic steps for our pipelines.
+	-  **endpoint1/**
+		-  **input/**
+		-  **transformer/**
+		-  **output/**
+		-  **orchestrator/ (Optional folder)**
+		-  **include/**
+		-  **main.py**
+		-  **constants.py**
+	-  **endpoint2/**
+		- ...
+
+  
+
+#### input folder
+In this directory we will have a class that will be responsible for downloading data from an external source (Database, Google Sheet, API, etc...). Our class must inherit from `from src.core.input.input_manager_interface import IInputManager` which has the following attributes:
+
+
+* **get_id** : To identify each step and know which pipeline it belongs to, we must assign a unique string that allows us to identify our step within the execution process. This same ID must be used in other steps such as the Transformer and the Output. The value of this ID should be defined in the `constants.py` file inside the app.
+
+  
+* **get_data**: This is the method that the orchestrator will execute to start downloading the data, it must return a list of data.
+
+	```python
+	from src.core.input.input_manager_interface import IInputManager
+	from src.app.resources.first_entry.constants import PROCESS_NAME
+
+
+	class MyInputManager(IInputManager):
+		def get_id(self):
+			return PROCESS_NAME
+
+		def get_data(self):
+			# Here the request will be made to the external source (API, db, etc.) to obtain the data.
+			return []
+	```
+---
+
+#### transformer folder
+Sometimes we must transform the data we have downloaded (Parse data types, calculations, convert values, etc...) to prepare it for output. Here we define a class for the second step of the pipeline. The class must implement the methods of the `from src.core.transformer.transformer_manager_interface import ITransformerManager)` interface:
+
+* **get_id**: Like the previous case, we must return a string with the pipeline ID, it must match the same one we used in the Input.
+
+* **set_mapper_manager**: In some cases we want to rename fields, for example, a field that has a name in our data source from step 1 we want to rename it in the output data source. Here we indicate the class of our mapper that will have the rules and mappings of the input names with the output names.
+
+* **transform**: This is where we will have the logic to transform each data. In the `data` parameter of the method we will have all the information that the Input downloaded and we can modify it or return it as is.
+
+	```python
+	from src.core.transformer.transformer_manager_interface import (
+		ITransformerManager,
+	)
+	from src.app.resources.first_entry.constants import PROCESS_NAME
+
+
+	class FirstTransformerManager(ITransformerManager):
+		def __init__(self, exclusions={}):
+			self.exclusions = exclusions
+
+		def get_id(self):
+			return PROCESS_NAME
+
+		def transform(self, data):
+			"""
+			Transforms the data
+			"""
+			transformed_data = transform_my_data(data)
+
+			return transformed_data
+	```
+---
+
+#### output folder
+This is the last step of the pipeline. This class is responsible for obtaining the transformed data and doing something with it, normally exporting it to another external source or executing some process.
+
+
+* **get_id**: Like the previous case, we must return a string with the pipeline ID, it must match the same one we used in the Input and Transformer.
+
+* **put**: This method receives a list of dictionaries with the transformed information.
+
+```python
+from typing import List
+
+from src.core.environment.environment import Environment
+from src.core.output.output_manager_interface import IOutputManager
+from src.app.resources.first_entry.constants import PROCESS_NAME
+
+
+class FirstOutputManager(IOutputManager):
+    def __init__(self):
+        environment = Environment()
+        self.project = environment.get_value("BIGQUERY_PROJECT")
+        self.dataset = environment.get_value("BIGQUERY_DATASET")
+        self.table_name = environment.get_value("BIGQUERY_TABLE_TO_EXPORT")
+        super().__init__()
+
+    def get_id(self):
+        return PROCESS_NAME
+
+    def put(self, data: List[dict]):
+		# Here we will process all the transformed information (Export to db, Bigquery, Pub/Sub, etc...)
+        pass
 
 ```
-from src.app.mapper.global_mapper_manager import GlobalMapperManager
+---
 
-from src.app.input.global_input_manager import GlobalInputManager
+#### orchestrator folder (Optional folder)
+**This directory is optional**, not all endpoints will have this directory. We will only create it when we want to modify the orchestrator and thus specify a new pipeline flow.
 
-from src.app.transformer.global_transformer_manager import GlobalTransformerManager
+This class must implement the `from core.orchestrator.abstract_orchestrator import AbstractOrchestrator` interface and implement the following methods:
 
-from src.app.output.global_output_manager import GlobalOutputManager
-```
+* **set_input_manager**: This method allows us to specify the transforms that we are going to register in the pipeline.
 
-2. Inside the _run()_ method in the same file, initialize the orchestrator:
+* **set_transformer_manager**: This method allows us to specify the data transformer class that we are going to register in the pipeline.
 
-```
-self.orchestrator.set_mapper_manager(GlobalMapperManager())
+* **set_output_manager**: This method allows us to specify the output class of the pipeline.
 
-self.orchestrator.set_input_manager(GlobalInputManager())
+* **run**: This method must have the logic of how the pipeline will be executed, what is the order of the steps, and where we must execute the corresponding methods of each step, etc...
 
-self.orchestrator.set_transformer_manager(GlobalTransformerManager())
+* **get_summary**: We use this method to have a result after the "run" method finishes executing. Execution times can be recorded to know how long it takes to execute each step of the pipeline and a total computing time to return in this method or a simple success to know that the process has finished.
 
-self.orchestrator.set_output_manager(GlobalOutputManager())
-```
+```python
+from src.core.orchestrator.abstract_orchestrator import AbstractOrchestrator
 
-3. Optionally, you can define the mandatory environment variables at `environment_variables`.
-   The variable names you set here will be checked. If not present, the application will halt.
 
-4. Implement the input, mapper, transformer, and output classes to suit your needs. You will find demo classes that can guide you as an example.
+class Orchestrator(AbstractOrchestrator):
+    """
+    Application orchestrator
+    """
 
-## Orchestrator
-
-The orchestrator is built-in to serve a default workflow that works as follows:
-
-1. The input data is stored in memory.
-2. The data is transformed and mapped.
-3. The data is stored in the output repository.
-
-This process is repeated for each pipeline sequentially.
-
-What if you want to process record by record? Well, in this case you have to rewrite the orchestrator and prepare your pipeline classes to attend to this use case.
-For example, instead of retrieving all the data, the input class should retrieve each record at a time. And the orchestrator would have a single iterator instead of three.
-
-## Mapper
-
-The mapper is a class that contains a JSON structure that defines how the input data matches the output data:
-
-```
-  DATA_MAPPER = [
-      {
-          "destination": {
-              "field_name": "person_id",
-              "type": "STRING",
-          },
-          "source": {
-              "field_name": ["employmentNav", "personNav", "personId"],
-              "type": "text",
-          },
-      },
-      {
-          "destination": {
-              "field_name": "email_address",
-              "type": "STRING",
-          },
-          "source": {
-              "field_name": ["employmentNav", "personNav", "emailNav", "results"],
-              "type": "filter",
-              "filter_definition": {
-                  "criteria": ["__metadata", "uri"],
-                  "matching": "contains",
-                  "value": "emailType='4049'",
-                  "source_field": "emailAddress",
-              },
-          },
-      },
-      {
-          "destination": {
-              "field_name": "global_effective_start_date",
-              "type": "STRING",
-          },
-          "source": {
-              "field_name": "startDate",
-              "type": "date",
-          },
-      },
-  ]
-```
-
-The _source_ type matches what you define at `app/transformer/abstract_transform_mananger.py`:
-
-```
-    def __get_primitive_value(self, field_type, value):
+    def run(self):
         """
-        Retrieves the primitive value of a field
+        Main method that will execute all the stages of the pipeline.
+        (Input, Transformer, Output/Export)
         """
-        if field_type == "date":
-            try:
-                value = self.__transform_epoch_to_formatted_date(value)
-            except TypeError:
-                return value
-        elif field_type == "text":
-            value = str(value)
-        elif field_type == "boolean":
-            value = bool(value)
-        elif field_type == "special_fte":
-            value = self.__transform_fte(value)
-        elif field_type == "special_holiday_calendar":
-            value = self.__transform_holiday_calendar_description(value)
+        super().is_initialized()
+
+        self.benchmark.start("total")
+
+        input_data = self._process_input_process()
+
+        transformed_data = self._process_data_transformation(input_data)
+
+        self._process_export_data(transformed_data)
+
+        self.elapsed_total = self.benchmark.end("total")
+
+    def _process_input_process(self):
+        """
+        In this stage all the Input information will be downloaded.
+        """
+        # Here we will have the logic to execute the first step of the pipeline to download data.
+		return input_data
+
+    def _process_data_transformation(self, input_data: dict):
+        """
+        In this stage, all the information downloaded into the Input
+        is transformed and a new list of data is generated.
+        """
+        # Here we will have to execute the transformer corresponding to the information generated in the previous step. (We must compare the value of the "get_id" method of each step to know which one it corresponds to.
+
+        return transformed_data
+
+    def _process_export_data(self, transformed_data: dict):
+        # Here we receive all the transformed information from all the pipelines and we can execute the output corresponding to each pipeline.
+		pass
+
+    def get_summary(self):
+        return {
+            "elapsed_total": self.elapsed_total,
+            "elapsed_input": self.elapsed_input,
+            "elapsed_transform": self.elapsed_transform,
+            "elapsed_output": self.elapsed_output,
+        }
+
 ```
+---
 
-Of course, you can redefine this method to suit your needs because it is part of the application.
-
-When you have a nested structure, you can point it like this: `"field_name": ["employmentNav", "personNav", "emailNav", "results"]`
 
 ## Entry points
-
 There are one entry point that you can rewrite to adapt to your requirements:
-1. `web.py`: A Flask application that runs the application after the execution of an endpoint.
+
+1.  `web.py`: A Flask application that runs the application after the execution of an endpoint.
+  
 
 # How to develop
 ## Execute project in local
-After clone project, just run:
+1. Create a python environment for the project with the command:
 
-`$ make run`
+	`$ mkvirtualenv [PROJECT_NAME]`
+
+	or if you have the python enviroment, you can just activate it:
+
+	`$ workon [ENVIRONMENT_NAME]`
+
+2. Install dependencies with the command
+
+	`$ pip install -r code/requirements.txt`
+
+3. Now you can run the Flask project with the command:
+
+	`$ make run`
 
 ### Open the localhost
-
 `http://127.0.0.1:5000/version`
 
 ### Open Swagger UI
 `http://127.0.0.1:5000/swagger/`
 
+# Managing dependencies in the project
 
-# Add new dependencies to the project
 ## Add the new dependency with poetry
+To add a new dependency in the project just run
 ```bash
-$ poetry add Flask
+$  poetry add Flask
 ```
-
+or you can specify the dependency version with:
+```bash
+$  poetry add Flask===3.0.3
+```
 ## Updating pip requirements.txt and update pip dependencies
 After add the new poetry dependency we need to execute
-```bash
-$ make freeze-dependencies
-```
-This will update the `requirements.txt` inside `code` folder.
-And now we can execute
-```bash
-$ pip install -r code/requirements.txt
-```
-to update local dependencies
 
-## Update the requirements.txt
+```bash
+$  make  freeze-dependencies
+```
+to update the requirements.txt
+
+This will update the `requirements.txt` inside `code` folder.
+
 Use the `make freeze-dependencies` command instead `pip freeze`.
+  
+
+And now we can execute
+
+```bash
+$  pip  install  -r  code/requirements.txt
+```
+
+to update local PIP dependencies.

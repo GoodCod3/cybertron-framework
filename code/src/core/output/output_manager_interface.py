@@ -12,13 +12,6 @@ class IOutputManager:
         raise NotImplementedError
 
     @abstractmethod
-    def set_mapper_manager(self, mapper_manager):
-        """
-        Sets the mapper
-        """
-        raise NotImplementedError
-
-    @abstractmethod
     def put(self, data):
         """
         Puts the transformed data

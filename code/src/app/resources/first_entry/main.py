@@ -1,9 +1,7 @@
 from src.app.resources.first_entry.input.first_input_manager import (
     FirstInputManager,
 )
-from src.app.resources.first_entry.mapper.first_mapper_manager import (
-    FirstMapperManager,
-)
+
 from src.app.resources.first_entry.output.first_output_manager import (
     FirstOutputManager,
 )
@@ -11,7 +9,6 @@ from src.app.resources.first_entry.transformer.first_transformer_manager import 
     FirstTransformerManager,
 )
 from src.app.resources.orchestrator_base_view import OrchestratorBaseView
-
 
 class MainRoute(OrchestratorBaseView):
     def get(self):
@@ -34,8 +31,6 @@ class MainRoute(OrchestratorBaseView):
             self.orchestrator.set_transformer_manager(
                 FirstTransformerManager()
             )
-
-            self.orchestrator.set_mapper_manager(FirstMapperManager())
 
             self.orchestrator.set_output_manager(FirstOutputManager())
 

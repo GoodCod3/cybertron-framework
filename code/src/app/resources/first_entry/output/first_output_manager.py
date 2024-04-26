@@ -1,8 +1,8 @@
 from typing import List
 
 from src.core.environment.environment import Environment
-from src.core.mapper.mapper_manager_interface import IMapperManager
 from src.core.output.output_manager_interface import IOutputManager
+from src.app.resources.first_entry.constants import PROCESS_NAME
 
 
 class FirstOutputManager(IOutputManager):
@@ -14,10 +14,9 @@ class FirstOutputManager(IOutputManager):
         super().__init__()
 
     def get_id(self):
-        return "global"
-
-    def set_mapper_manager(self, mapper_manager: IMapperManager):
-        pass
+        return PROCESS_NAME
 
     def put(self, data: List[dict]):
+        # Here we will process all the transformed information
+        # (Export to db, Bigquery, Pub/Sub, etc...)
         pass

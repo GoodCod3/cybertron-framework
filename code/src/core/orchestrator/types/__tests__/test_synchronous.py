@@ -3,7 +3,6 @@ from code.test_setup import *  # noqa: F401, F403
 from unittest.mock import MagicMock
 
 from src.core.input.input_manager_interface import IInputManager
-from src.core.mapper.mapper_manager_interface import IMapperManager
 from src.core.orchestrator.types.synchronous import Orchestrator
 from src.core.output.output_manager_interface import IOutputManager
 from src.core.transformer.transformer_manager_interface import (
@@ -17,7 +16,6 @@ class TestOrchestrator(unittest.TestCase):
         self.mock_input_manager = MagicMock(spec=IInputManager)
         self.mock_transformer_manager = MagicMock(spec=ITransformerManager)
         self.mock_output_manager = MagicMock(spec=IOutputManager)
-        self.mock_mapper_manager = MagicMock(spec=IMapperManager)
 
     def test_run_executes_all_stages_of_pipeline(self):
         # Mocking input data
@@ -44,7 +42,6 @@ class TestOrchestrator(unittest.TestCase):
         self.orchestrator.set_transformer_manager(
             self.mock_transformer_manager
         )
-        self.orchestrator.set_mapper_manager(self.mock_mapper_manager)
         self.orchestrator.set_output_manager(self.mock_output_manager)
 
         # Running the orchestrator
@@ -90,7 +87,6 @@ class TestOrchestrator(unittest.TestCase):
         self.orchestrator.set_transformer_manager(
             self.mock_transformer_manager
         )
-        self.orchestrator.set_mapper_manager(self.mock_mapper_manager)
         self.orchestrator.set_output_manager(self.mock_output_manager)
 
         with self.assertRaises(RuntimeError):
@@ -111,7 +107,6 @@ class TestOrchestrator(unittest.TestCase):
 
         # Setting up orchestrator without transformer
         self.orchestrator.set_input_manager(self.mock_input_manager)
-        self.orchestrator.set_mapper_manager(self.mock_mapper_manager)
         self.orchestrator.set_output_manager(self.mock_output_manager)
 
         with self.assertRaises(RuntimeError):
@@ -165,7 +160,6 @@ class TestOrchestrator(unittest.TestCase):
         self.orchestrator.set_transformer_manager(
             self.mock_transformer_manager
         )
-        self.orchestrator.set_mapper_manager(self.mock_mapper_manager)
 
         with self.assertRaises(RuntimeError):
             self.orchestrator.run()
@@ -196,7 +190,6 @@ class TestOrchestrator(unittest.TestCase):
         self.orchestrator.set_transformer_manager(
             self.mock_transformer_manager
         )
-        self.orchestrator.set_mapper_manager(self.mock_mapper_manager)
         self.orchestrator.set_output_manager(self.mock_output_manager)
 
         with self.assertRaises(AttributeError):

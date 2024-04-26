@@ -4,7 +4,6 @@ from unittest.mock import MagicMock
 from core.orchestrator.abstract_orchestrator import (
     AbstractOrchestrator,
     IInputManager,
-    IMapperManager,
     IOutputManager,
     ITransformerManager,
 )
@@ -44,18 +43,6 @@ class TestAbstractOrchestrator(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             self.orchestrator.is_initialized()
-
-    def test_set_mapper_manager_adds_mapper_manager_correctly(self):
-        mapper_manager_mock = MagicMock(spec=IMapperManager)
-        mapper_manager_mock.get_id.return_value = "test_mapper_manager"
-
-        self.orchestrator.set_mapper_manager(mapper_manager_mock)
-
-        self.assertIn("test_mapper_manager", self.orchestrator.mapper_manager)
-        self.assertEqual(
-            self.orchestrator.mapper_manager["test_mapper_manager"],
-            mapper_manager_mock,
-        )
 
     def test_set_input_manager_adds_input_manager_correctly(self):
         input_manager_mock = MagicMock(spec=IInputManager)

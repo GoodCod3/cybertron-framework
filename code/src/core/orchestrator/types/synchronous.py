@@ -59,8 +59,6 @@ class Orchestrator(AbstractOrchestrator):
             transformer_manager = self.transformer_manager[
                 transformer_manager_id
             ]
-            mapper_manager = self.mapper_manager[transformer_manager_id]
-            transformer_manager.set_mapper_manager(mapper_manager)
 
             transformed_data[
                 transformer_manager.get_id()
@@ -82,9 +80,7 @@ class Orchestrator(AbstractOrchestrator):
                 f"-- Output manager {output_manager_id} ({i + 1}/{len(self.output_manager)})."  # noqa: E501
             )
             output_manager = self.output_manager[output_manager_id]
-            mapper_manager = self.mapper_manager[output_manager_id]
 
-            output_manager.set_mapper_manager(mapper_manager)
             output_manager.put(transformed_data[output_manager_id])
 
         self.elapsed_output = self.benchmark.end("output")
