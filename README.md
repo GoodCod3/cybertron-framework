@@ -227,6 +227,9 @@ class Orchestrator(AbstractOrchestrator):
 ```
 ---
 
+#### include folder (Generic services to use in each steps)
+It contains all the generic connectors for our application (i.e. BigQuery client, SuccessFactors client, SAP client, etc.).
+They can be simple functions or classes that centralize the business logic.
 
 #### main.py (Running the flask endpoint)
 Here we will find a class that inherits from the base class of the project (`from src.app.resources.base_view import BaseView`)
