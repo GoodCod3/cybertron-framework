@@ -42,7 +42,7 @@ Before we start, please take into account that this framework relies heavily on 
 When creating new functionalities, you should implement these interfaces to make sure that the pieces are correctly aligned and the classes exposes the expected methods.
 
 Each endpoint of the flask application would have its own process or set of pipelines that will be executed by the selected orchestrator and must implement each layer of the pipeline that will be explained below.
-  
+
 
 ## Project structure
 Each Flask project will have two main directories:
@@ -63,7 +63,7 @@ Each endpoint will have its own directory where the different classes that belon
 	-  **endpoint2/**
 		- ...
 
-  
+
 
 #### input folder
 In this directory we will have a class that will be responsible for downloading data from an external source (Database, Google Sheet, API, etc...). Our class must inherit from `from src.core.input.input_manager_interface import IInputManager` which has the following attributes:
@@ -71,7 +71,7 @@ In this directory we will have a class that will be responsible for downloading 
 
 * **get_id** : To identify each step and know which pipeline it belongs to, we must assign a unique string that allows us to identify our step within the execution process. This same ID must be used in other steps such as the Transformer and the Output. The value of this ID should be defined in the `constants.py` file inside the app.
 
-  
+
 * **get_data**: This is the method that the orchestrator will execute to start downloading the data, it must return a list of data.
 
 	```python
@@ -233,7 +233,7 @@ class Orchestrator(AbstractOrchestrator):
 There are one entry point that you can rewrite to adapt to your requirements:
 
 1.  `web.py`: A Flask application that runs the application after the execution of an endpoint.
-  
+
 
 # How to develop
 ## Execute project in local
@@ -281,7 +281,7 @@ to update the requirements.txt
 This will update the `requirements.txt` inside `code` folder.
 
 Use the `make freeze-dependencies` command instead `pip freeze`.
-  
+
 
 And now we can execute
 

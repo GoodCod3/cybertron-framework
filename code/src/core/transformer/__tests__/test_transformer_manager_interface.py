@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock
 
 from core.transformer.transformer_manager_interface import ITransformerManager
 
@@ -11,7 +11,6 @@ class TestTransformerManager(unittest.TestCase):
     def test_fail_get_id(self):
         with self.assertRaises(NotImplementedError):
             self.manager.get_id()
-
 
     def test_fail_transform(self):
         data = {}
@@ -28,5 +27,4 @@ class TestTransformerManager(unittest.TestCase):
         result_transform = transformer_mock.transform(data)
 
         self.assertEqual(result_id, "1")
-        self.assertEqual(result_mapper, {})
         self.assertEqual(result_transform, {"a": 1})

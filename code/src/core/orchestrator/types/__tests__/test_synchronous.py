@@ -30,10 +30,6 @@ class TestOrchestrator(unittest.TestCase):
         )
         self.mock_transformer_manager.transform.return_value = transformed_data
 
-        # Mocking mapper
-        self.mock_mapper_manager.get_id.return_value = "pipeline_unique_id"
-        self.mock_mapper_manager.get.return_value = []
-
         # Mocking output data
         self.mock_output_manager.get_id.return_value = "pipeline_unique_id"
 
@@ -76,10 +72,6 @@ class TestOrchestrator(unittest.TestCase):
         )
         self.mock_transformer_manager.transform.return_value = transformed_data
 
-        # Mocking mapper
-        self.mock_mapper_manager.get_id.return_value = "pipeline_unique_id"
-        self.mock_mapper_manager.get.return_value = []
-
         # Mocking output data
         self.mock_output_manager.get_id.return_value = "pipeline_unique_id"
 
@@ -98,41 +90,11 @@ class TestOrchestrator(unittest.TestCase):
         self.mock_input_manager.get_id.return_value = "pipeline_unique_id"
         self.mock_input_manager.get_data.return_value = input_data
 
-        # Mocking mapper
-        self.mock_mapper_manager.get_id.return_value = "pipeline_unique_id"
-        self.mock_mapper_manager.get.return_value = []
-
         # Mocking output data
         self.mock_output_manager.get_id.return_value = "pipeline_unique_id"
 
         # Setting up orchestrator without transformer
         self.orchestrator.set_input_manager(self.mock_input_manager)
-        self.orchestrator.set_output_manager(self.mock_output_manager)
-
-        with self.assertRaises(RuntimeError):
-            self.orchestrator.run()
-
-    def test_fail_when_mapper_step_is_missing(self):
-        # Mocking input data
-        input_data = {"pipeline_unique_id": "input_data"}
-        self.mock_input_manager.get_id.return_value = "pipeline_unique_id"
-        self.mock_input_manager.get_data.return_value = input_data
-
-        # Mocking transformed data
-        transformed_data = {"pipeline_unique_id": "transformed_data"}
-        self.mock_transformer_manager.get_id.return_value = (
-            "pipeline_unique_id"
-        )
-        self.mock_transformer_manager.transform.return_value = transformed_data
-
-        # Mocking output data
-        self.mock_output_manager.get_id.return_value = "pipeline_unique_id"
-
-        # Setting up orchestrator without mapper
-        self.orchestrator.set_input_manager(self.mock_input_manager)
-        self.orchestrator.set_transformer_manager(
-            self.mock_transformer_manager
-        )
         self.orchestrator.set_output_manager(self.mock_output_manager)
 
         with self.assertRaises(RuntimeError):
@@ -150,10 +112,6 @@ class TestOrchestrator(unittest.TestCase):
             "pipeline_unique_id"
         )
         self.mock_transformer_manager.transform.return_value = transformed_data
-
-        # Mocking mapper
-        self.mock_mapper_manager.get_id.return_value = "pipeline_unique_id"
-        self.mock_mapper_manager.get.return_value = []
 
         # Setting up orchestrator without output
         self.orchestrator.set_input_manager(self.mock_input_manager)
@@ -177,10 +135,6 @@ class TestOrchestrator(unittest.TestCase):
             "pipeline_unique_id"
         )
         self.mock_transformer_manager.transform.return_value = transformed_data
-
-        # Mocking mapper
-        self.mock_mapper_manager.get_id.return_value = "pipeline_unique_id"
-        self.mock_mapper_manager.get.return_value = []
 
         # Mocking output data
         self.mock_output_manager.get_id.return_value = "pipeline_unique_id"

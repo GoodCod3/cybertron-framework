@@ -1,7 +1,7 @@
+from src.app.resources.first_entry.constants import PROCESS_NAME
 from src.core.transformer.transformer_manager_interface import (
     ITransformerManager,
 )
-from src.app.resources.first_entry.constants import PROCESS_NAME
 
 
 class FirstTransformerManager(ITransformerManager):

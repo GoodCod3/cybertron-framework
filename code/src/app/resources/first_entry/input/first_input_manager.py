@@ -1,5 +1,5 @@
-from src.core.input.input_manager_interface import IInputManager
 from src.app.resources.first_entry.constants import PROCESS_NAME
+from src.core.input.input_manager_interface import IInputManager
 
 
 class FirstInputManager(IInputManager):

@@ -1,8 +1,8 @@
 from typing import List
 
+from src.app.resources.first_entry.constants import PROCESS_NAME
 from src.core.environment.environment import Environment
 from src.core.output.output_manager_interface import IOutputManager
-from src.app.resources.first_entry.constants import PROCESS_NAME
 
 
 class FirstOutputManager(IOutputManager):
