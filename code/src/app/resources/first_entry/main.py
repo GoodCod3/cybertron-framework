@@ -35,14 +35,14 @@ class MainRoute(OrchestratorBaseView):
             self.orchestrator.set_output_manager(FirstOutputManager())
 
             self.orchestrator.run()
-
-            response_content = {
-                "response": self.orchestrator.get_summary(),
-            }
         except Exception as err:
             self.logger.error(str(err), from_exception=True)
 
             response_status = 500
             response_content = {"response": "KO", "error_message": str(err)}
+        else:
+            response_content = {
+                "response": self.orchestrator.get_summary(),
+            }
 
         return response_content, response_status
