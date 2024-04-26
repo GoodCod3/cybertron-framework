@@ -152,6 +152,8 @@ class FirstOutputManager(IOutputManager):
         pass
 
 ```
+
+> We call the set of **Input + Transformer + Output**  "Pipeline", and normally are executed in that order.
 ---
 
 #### orchestrator folder (Optional folder)
