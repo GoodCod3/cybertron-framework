@@ -1,3 +1,4 @@
+from src.app.resources.base_view import BaseView
 from src.app.resources.first_entry.input.first_input_manager import (
     FirstInputManager,
 )
@@ -7,10 +8,9 @@ from src.app.resources.first_entry.output.first_output_manager import (
 from src.app.resources.first_entry.transformer.first_transformer_manager import (  # noqa: E501
     FirstTransformerManager,
 )
-from src.app.resources.orchestrator_base_view import OrchestratorBaseView
 
 
-class MainRoute(OrchestratorBaseView):
+class MainRoute(BaseView):
     def get(self):
         """
         This is a basic view, it will have to be renamed to adjust it to

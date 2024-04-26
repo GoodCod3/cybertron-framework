@@ -1,7 +1,7 @@
-from src.app.resources.orchestrator_base_view import OrchestratorBaseView
+from src.app.resources.base_view import BaseView
 
 
-class VersionView(OrchestratorBaseView):
+class VersionView(BaseView):
     def get(self):
         """
         This view returns the current version of the application.

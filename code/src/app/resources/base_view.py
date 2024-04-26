@@ -9,7 +9,7 @@ from src.core.orchestrator.types.synchronous import Orchestrator
 ENVIRONMENT_VARIABLES = []
 
 
-class OrchestratorBaseView(Resource):
+class BaseView(Resource):
     def __init__(self):
         super().__init__()
         self.logger = Logger()
