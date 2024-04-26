@@ -307,6 +307,31 @@ where we can record each step of our pipeline and execute the "run" method to ex
 
 	```
 
+## Global or generic steps for pipelines
+In some cases we need to have different pipelines, either from the same process or different ones that share some steps and we want to reuse the same class in each pipeline. In that case we can replicate the directory structure `(Input, Transformer, Output, Include, Orchestrator, etc...)` at a level higher than the endpoint, so that it is global to all endpoints and each one imports it from there.
+
+In this way we would have a project structure similar to the following:
+
+-  **app/**
+	-  **input/**
+	-  **transformer/**
+	-  **output/**
+	-  **orchestrator/ (Optional folder)**
+	-  **include/**
+	-  **resources/**
+		-  **endpoint1/**
+			-  **input/**
+			-  **transformer/**
+			-  **output/**
+			-  **orchestrator/ (Optional folder)**
+			-  **include/**
+			-  **main.py**
+			-  **constants.py**
+		-  **endpoint2/**
+			- ...
+-  **core/**
+	- ...
+
 ## Entry points
 There are one entry point that you can rewrite to adapt to your requirements:
 
