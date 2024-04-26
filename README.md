@@ -155,6 +155,81 @@ class FirstOutputManager(IOutputManager):
 
 **NOTE** ```We call the set of **Input + Transformer + Output**  "Pipeline", and normally are executed in that order.```
 
+#### main.py (Running the flask endpoint)
+Here we will find a class that inherits from the base class of the project (`from src.app.resources.base_view import BaseView`)
+which offers us two main attributes:
+
+* **environment** : Instance of the "Environment" class of the core, where we can obtain values of environment variables and validate whether they exist or not.
+
+	```python
+	from src.core.environment.environment import Environment
+	```
+
+* **orchestrator** : Instance of class `from src.core.orchestrator.types.synchronous import Orchestrator`
+where we can record each step of our pipeline and execute the "run" method to execute the pipelines.
+
+```python
+from src.app.resources.base_view import BaseView
+from src.app.resources.first_entry.input.first_input_manager import (
+    FirstInputManager,
+    SecondInputManager,
+)
+from src.app.resources.first_entry.output.first_output_manager import (
+    FirstOutputManager,
+    SecondOutputManager,
+)
+from src.app.resources.first_entry.transformer.first_transformer_manager import (  # noqa: E501
+    FirstTransformerManager,
+    SecondTransformerManager,
+)
+
+
+class MainRoute(BaseView):
+    def get(self):
+        """
+        This is an example endpoint where we register 2 pipelines in the same process. When executing the "run" method of the orchestrator, the pipelines will be processed.
+        ---
+        responses:
+          200:
+            description: Ok
+            schema:
+              type: string
+        """
+        response_status = 200
+
+        try:
+            self.logger.info("Process started.")
+
+			# Register Inputs
+            self.orchestrator.set_input_manager(FirstInputManager())
+            self.orchestrator.set_input_manager(SecondInputManager())
+
+			# Register Transformers
+            self.orchestrator.set_transformer_manager(
+                FirstTransformerManager()
+            )
+            self.orchestrator.set_transformer_manager(
+                SecondTransformerManager()
+            )
+
+			# Register Outputs
+            self.orchestrator.set_output_manager(FirstOutputManager())
+            self.orchestrator.set_output_manager(SecondOutputManager())
+
+            self.orchestrator.run()
+        except Exception as err:
+            self.logger.error(str(err), from_exception=True)
+
+            response_status = 500
+            response_content = {"response": "KO", "error_message": str(err)}
+        else:
+            response_content = {
+                "response": self.orchestrator.get_summary(),
+            }
+
+        return response_content, response_status
+
+```
 ---
 
 #### orchestrator folder (Optional folder)
