@@ -94,8 +94,6 @@ Sometimes we must transform the data we have downloaded (Parse data types, calcu
 
 * **get_id**: Like the previous case, we must return a string with the pipeline ID, it must match the same one we used in the Input.
 
-* **set_mapper_manager**: In some cases we want to rename fields, for example, a field that has a name in our data source from step 1 we want to rename it in the output data source. Here we indicate the class of our mapper that will have the rules and mappings of the input names with the output names.
-
 * **transform**: This is where we will have the logic to transform each data. In the `data` parameter of the method we will have all the information that the Input downloaded and we can modify it or return it as is.
 
 	```python
