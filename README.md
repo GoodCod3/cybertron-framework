@@ -65,7 +65,7 @@ Each endpoint will have its own directory where the different classes that belon
 
 
 
-#### input folder
+#### input folder (First step of the pipeline)
 In this directory we will have a class that will be responsible for downloading data from an external source (Database, Google Sheet, API, etc...). Our class must inherit from `from src.core.input.input_manager_interface import IInputManager` which has the following attributes:
 
 
@@ -89,7 +89,7 @@ In this directory we will have a class that will be responsible for downloading 
 	```
 ---
 
-#### transformer folder
+#### transformer folder (Second step of the pipeline)
 Sometimes we must transform the data we have downloaded (Parse data types, calculations, convert values, etc...) to prepare it for output. Here we define a class for the second step of the pipeline. The class must implement the methods of the `from src.core.transformer.transformer_manager_interface import ITransformerManager)` interface:
 
 * **get_id**: Like the previous case, we must return a string with the pipeline ID, it must match the same one we used in the Input.
@@ -122,7 +122,7 @@ Sometimes we must transform the data we have downloaded (Parse data types, calcu
 	```
 ---
 
-#### output folder
+#### output folder (Last step of the pipeline)
 This is the last step of the pipeline. This class is responsible for obtaining the transformed data and doing something with it, normally exporting it to another external source or executing some process.
 
 
