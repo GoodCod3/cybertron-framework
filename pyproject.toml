@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "tiber-framework"
+name = "cybertron_framework"
 version = "0.0.0"
-description = ""
+description = "Cybertron is a framework intended for retrieving data from one or several repositories, transforming it, and storing in output repositories"
 authors = ["Making Science"]
 readme = "README.md"
-packages = [{include = "code"}]
+packages = [{include = "cybertron_framework"}]
 include = ["pre-commit-config.yaml"]
 
 [tool.poetry.dependencies]
@@ -12,12 +12,6 @@ python = "^3.8.1"
 flake8 = "^6.0.0"
 isort = "^5.12.0"
 pre-commit = "^3.1.1"
-flask = "^3.0.3"
-coverage = "^7.4.4"
-flask-restful = "^0.3.10"
-flask-swagger = "^0.2.14"
-flask-swagger-ui = "^4.11.1"
-requests = "^2.31.0"
 freezegun = "^1.5.0"
 
 [build-system]
@@ -36,3 +30,4 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 line_length = 79
+

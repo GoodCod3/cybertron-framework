@@ -1,14 +1,7 @@
 PYTHON=python
-FILENAME=code/web.py
-
-run:
-	export FLASK_DEBUG=True; export PORT=8080; ${PYTHON} ${FILENAME}
 
 test:
-	poetry run ${PYTHON} -m unittest discover code/src/ "test_*.py"
-
-test-unique:
-	poetry run ${PYTHON} -m unittest discover code/src/ "test_synchronous.py"
+	poetry run ${PYTHON} -m unittest discover cybertron_framework/ "test_*.py"
 
 lint:
 	poetry run flake8
@@ -23,8 +16,29 @@ pre-commit:
 	pre-commit run --all-files
 
 freeze-dependencies:
-	poetry export -f requirements.txt --output code/requirements.txt --without-hashes
+	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-coverage:
-	poetry run coverage run -m  unittest discover code/src/ "test_*.py"
-	poetry run coverage html --omit="*/__tests__/*,*/__init__*"
+release-major:
+	@poetry version major && \
+	echo "Publicando versión $$(poetry version --no-interaction | cut -d ' ' -f 2)" && \
+	git ci -am "New release v$$(poetry version --no-interaction | cut -d ' ' -f 2)" && \
+	git push && \
+	git tag v$$(poetry version --no-interaction | cut -d ' ' -f 2) && \
+	git push origin --tags
+
+release-minor:
+	@poetry version minor && \
+	echo "Publicando versión $$(poetry version --no-interaction | cut -d ' ' -f 2)" && \
+	git ci -am "New release v$$(poetry version --no-interaction | cut -d ' ' -f 2)" && \
+	git push && \
+	git tag v$$(poetry version --no-interaction | cut -d ' ' -f 2) && \
+	git push origin --tags
+
+
+release-patch:
+	@poetry version patch && \
+	echo "Publicando versión $$(poetry version --no-interaction | cut -d ' ' -f 2)" && \
+	git ci -am "New release v$$(poetry version --no-interaction | cut -d ' ' -f 2)" && \
+	git push && \
+	git tag v$$(poetry version --no-interaction | cut -d ' ' -f 2) && \
+	git push origin --tags

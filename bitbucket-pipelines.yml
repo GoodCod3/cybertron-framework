@@ -29,12 +29,11 @@ pipelines:
             - poetry install
             - make lint
             - make isort
-            - make coverage
-
+            - make test
   tags:
     "v*.*.*":
       - step:
-          name: Publish new version
+          name: Test and lint
           caches:
             - "pip"
           script:
@@ -49,4 +48,9 @@ pipelines:
           caches:
             - "pip"
           script:
-            - echo "Publishing..."
+            - pip install poetry
+            - echo "$GOOGLE_SERVICE_ACCOUNT_CREDENTIALS" | base64 -d > credentials.json
+            - gcloud auth activate-service-account bitbucket-pipelines@ms--tiber-com-lib--pro--8bd7.iam.gserviceaccount.com --key-file=credentials.json --project=ms--tiber-com-lib--pro--8bd7 --project ms--tiber-com-lib--pro--8bd7
+            - poetry self add keyrings.google-artifactregistry-auth
+            - poetry build
+            - poetry publish -r syscorp-librarian 

@@ -66,7 +66,7 @@ Each endpoint will have its own directory where the different classes that belon
 
 
 #### input folder (First step of the pipeline)
-In this directory we will have a class that will be responsible for downloading data from an external source (Database, Google Sheet, API, etc...). Our class must inherit from `from src.core.input.input_manager_interface import IInputManager` which has the following attributes:
+In this directory we will have a class that will be responsible for downloading data from an external source (Database, Google Sheet, API, etc...). Our class must inherit from `from cybertron_framework.input.input_manager_interface import IInputManager` which has the following attributes:
 
 
 * **get_id** : To identify each step and know which pipeline it belongs to, we must assign a unique string that allows us to identify our step within the execution process. This same ID must be used in other steps such as the Transformer and the Output. The value of this ID should be defined in the `constants.py` file inside the app.
@@ -75,7 +75,7 @@ In this directory we will have a class that will be responsible for downloading 
 * **get_data**: This is the method that the orchestrator will execute to start downloading the data, it must return a list of data.
 
 	```python
-	from src.core.input.input_manager_interface import IInputManager
+	from cybertron_framework.input.input_manager_interface import IInputManager
 	from src.app.resources.first_entry.constants import PROCESS_NAME
 
 
@@ -90,14 +90,14 @@ In this directory we will have a class that will be responsible for downloading 
 ---
 
 #### transformer folder (Second step of the pipeline)
-Sometimes we must transform the data we have downloaded (Parse data types, calculations, convert values, etc...) to prepare it for output. Here we define a class for the second step of the pipeline. The class must implement the methods of the `from src.core.transformer.transformer_manager_interface import ITransformerManager)` interface:
+Sometimes we must transform the data we have downloaded (Parse data types, calculations, convert values, etc...) to prepare it for output. Here we define a class for the second step of the pipeline. The class must implement the methods of the `from cybertron_framework.transformer.transformer_manager_interface import ITransformerManager)` interface:
 
 * **get_id**: Like the previous case, we must return a string with the pipeline ID, it must match the same one we used in the Input.
 
 * **transform**: This is where we will have the logic to transform each data. In the `data` parameter of the method we will have all the information that the Input downloaded and we can modify it or return it as is.
 
 	```python
-	from src.core.transformer.transformer_manager_interface import (
+	from cybertron_framework.transformer.transformer_manager_interface import (
 		ITransformerManager,
 	)
 	from src.app.resources.first_entry.constants import PROCESS_NAME
@@ -131,8 +131,8 @@ This is the last step of the pipeline. This class is responsible for obtaining t
 ```python
 from typing import List
 
-from src.core.environment.environment import Environment
-from src.core.output.output_manager_interface import IOutputManager
+from cybertron_framework.environment.environment import Environment
+from cybertron_framework.output.output_manager_interface import IOutputManager
 from src.app.resources.first_entry.constants import PROCESS_NAME
 
 
@@ -160,7 +160,7 @@ class FirstOutputManager(IOutputManager):
 #### orchestrator folder (Optional folder)
 **This directory is optional**, not all endpoints will have this directory. We will only create it when we want to modify the orchestrator and thus specify a new pipeline flow.
 
-This class must implement the `from core.orchestrator.abstract_orchestrator import AbstractOrchestrator` interface and implement the following methods:
+This class must implement the `from cybertron_framework.orchestrator.abstract_orchestrator import AbstractOrchestrator` interface and implement the following methods:
 
 * **set_input_manager**: This method allows us to specify the transforms that we are going to register in the pipeline.
 
@@ -173,7 +173,7 @@ This class must implement the `from core.orchestrator.abstract_orchestrator impo
 * **get_summary**: We use this method to have a result after the "run" method finishes executing. Execution times can be recorded to know how long it takes to execute each step of the pipeline and a total computing time to return in this method or a simple success to know that the process has finished.
 
 ```python
-from src.core.orchestrator.abstract_orchestrator import AbstractOrchestrator
+from cybertron_framework.orchestrator.abstract_orchestrator import AbstractOrchestrator
 
 
 class Orchestrator(AbstractOrchestrator):
@@ -238,10 +238,10 @@ which offers us two main attributes:
 * **environment** : Instance of the "Environment" class of the core, where we can obtain values of environment variables and validate whether they exist or not.
 
 	```python
-	from src.core.environment.environment import Environment
+	from cybertron_framework.environment.environment import Environment
 	```
 
-* **orchestrator** : Instance of class `from src.core.orchestrator.types.synchronous import Orchestrator`
+* **orchestrator** : Instance of class `from cybertron_framework.orchestrator.types.synchronous import Orchestrator`
 where we can record each step of our pipeline and execute the "run" method to execute the pipelines.
 
 	```python
@@ -362,6 +362,28 @@ There are one entry point that you can rewrite to adapt to your requirements:
 ### Open Swagger UI
 `http://127.0.0.1:5000/swagger/`
 
+
+# How to contribute
+After clone repository
+
+
+## 1.- Run test
+```bash
+make test
+```
+
+## 2.- Run lint and Isort
+```bash
+make lint && make isort
+```
+
+## 3.- Run pre commit command
+This command will fix and run all lint rules (lint + Isort). You can configure this command with "pre-commit"
+to run command on before make the Git commit automatically.
+```bash
+make pre-commit
+```
+
 # Managing dependencies in the project
 
 ## Add the new dependency with poetry
@@ -393,3 +415,19 @@ $  pip  install  -r  code/requirements.txt
 ```
 
 to update local PIP dependencies.
+
+
+## How to publish new version
+Once we have done a merge of our Pull request and we have the updated master branch we can generate a new version. For them we have 3 commands that change the version of our library and generate the corresponding tag so that the Bitbucket pipeline starts and publishes our library automatically.
+
+```bash
+make release-patch
+```
+
+```bash
+make release-minor
+```
+
+```bash
+make release-major
+```

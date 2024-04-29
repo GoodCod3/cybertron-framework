@@ -8,5 +8,6 @@ exclude =
     venv,
     .venv/*,
     .env,
+    cybertron_framework.egg-info/*
     build/
     dist/

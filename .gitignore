@@ -2,6 +2,5 @@
 node_modules
 build
 dist
-*.egg-info
+cybertron_framework.egg-info
 __pycache__
-.coverage
