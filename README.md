@@ -3,9 +3,8 @@ Cybertron is a framework intended for retrieving data from one or several reposi
 For this purpose, pipelines are defined to manage the different stages of the process.
 
 ## Authors
-Eduardo Martos Gómez <emartos@natiboo.es>
-
-Jonathan Rodríguez Alejos <jonathan.rodriguez@goodcodesolution.com>
+* Eduardo Martos Gómez <<emartos@natiboo.es>>
+* Jonathan Rodríguez Alejos <<jonathan.rodriguez@goodcodesolution.com>>
 
 ## Pipeline
 A pipeline refers to a series of steps (`Input`, `Transform`, `Mapper` and `Output`). Each process can have 1 or many pipelines and the orchestrator will decide how they will be executed.
