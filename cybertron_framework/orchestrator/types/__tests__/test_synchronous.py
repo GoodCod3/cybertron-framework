@@ -1,5 +1,4 @@
 import unittest
-# from code.test_setup import *  # noqa: F401, F403
 from unittest.mock import MagicMock
 
 from cybertron_framework.input.input_manager_interface import IInputManager

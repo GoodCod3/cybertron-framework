@@ -2,6 +2,10 @@
 Cybertron is a framework intended for retrieving data from one or several repositories, transforming it, and storing in output repositories.
 For this purpose, pipelines are defined to manage the different stages of the process.
 
+[![GoodCod3 - cybertron-framework](https://img.shields.io/static/v1?label=GoodCod3&message=cybertron-framework&color=blue&logo=github)](https://github.com/GoodCod3/cybertron-framework "Go to GitHub repo")
+[![GitHub tag](https://img.shields.io/github/tag/GoodCod3/cybertron-framework?include_prereleases=&sort=semver&color=blue)](https://github.com/GoodCod3/cybertron-framework/releases/)
+[![License](https://img.shields.io/badge/License-GNU_General_Public-blue)](#license)
+
 ## Authors
 * Eduardo Martos Gómez <<emartos@natiboo.es>>
 * Jonathan Rodríguez Alejos <<jonathan.rodriguez@goodcodesolution.com>>
