@@ -12,13 +12,6 @@ class ITransformerManager:
         raise NotImplementedError
 
     @abstractmethod
-    def set_mapper(self, mapper_manager):
-        """
-        Sets the mapper
-        """
-        raise NotImplementedError
-
-    @abstractmethod
     def transform(self, data):
         """
         Transforms the input data

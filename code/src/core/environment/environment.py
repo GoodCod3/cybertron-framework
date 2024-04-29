@@ -3,6 +3,8 @@ import os
 import yaml
 from src.core.environment.environment_interface import IEnvironment
 
+DEFAULT_VARIABLE_VALUE = None
+
 
 class Environment(IEnvironment):
     """
@@ -18,11 +20,11 @@ class Environment(IEnvironment):
         return cls._instance
 
     def __init__(self):
+        self.environment_variables = getattr(self, "environment_variables", [])
+        self.config_variables = getattr(self, "config_variables", {})
+
         if self._instance is not None:
             return
-
-        self.environment_variables = None
-        self.config_variables = None
 
     def set_environment_variables(self, environment_variables):
         self.environment_variables = environment_variables
@@ -33,7 +35,7 @@ class Environment(IEnvironment):
 
     def check(self):
         for environment_variable in self.environment_variables:
-            value = os.getenv(environment_variable)
+            value = os.getenv(environment_variable, DEFAULT_VARIABLE_VALUE)
             if not value:
                 raise RuntimeError(
                     f"Environment variable not defined: {environment_variable}"
@@ -42,7 +44,5 @@ class Environment(IEnvironment):
     def get_value(self, key):
         if key in self.config_variables:
             return self.config_variables[key]
-        elif os.getenv(key):
-            return os.getenv(key)
 
-        return None
+        return os.getenv(key, DEFAULT_VARIABLE_VALUE)

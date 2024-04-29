@@ -1,8 +1,11 @@
+from typing import List
+
+from src.app.resources.first_entry.constants import PROCESS_NAME
 from src.core.environment.environment import Environment
 from src.core.output.output_manager_interface import IOutputManager
 
 
-class GlobalOutputManager(IOutputManager):
+class FirstOutputManager(IOutputManager):
     def __init__(self):
         environment = Environment()
         self.project = environment.get_value("BIGQUERY_PROJECT")
@@ -11,4 +14,9 @@ class GlobalOutputManager(IOutputManager):
         super().__init__()
 
     def get_id(self):
-        return "global"
+        return PROCESS_NAME
+
+    def put(self, data: List[dict]):
+        # Here we will process all the transformed information
+        # (Export to db, Bigquery, Pub/Sub, etc...)
+        pass
