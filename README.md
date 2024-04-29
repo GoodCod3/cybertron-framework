@@ -3,7 +3,8 @@ Cybertron is a framework intended for retrieving data from one or several reposi
 For this purpose, pipelines are defined to manage the different stages of the process.
 
 ## Authors
-Eduardo Martos Gómez <emartos@natiboo.es>.
+Eduardo Martos Gómez <emartos@natiboo.es>
+
 Jonathan Rodríguez Alejos <jonathan.rodriguez@goodcodesolution.com>
 
 ## Pipeline
