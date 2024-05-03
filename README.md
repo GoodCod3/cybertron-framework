@@ -20,6 +20,29 @@ It is responsible for executing the different steps of each pipeline. The core d
 #### Synchronous
 The same process can have 1 or more pipeline defined, when it is executed it will do so sequentially, executing the same step for each pipeline. That is, first it will execute the Input of all the pipelines, then the transform together with the mapper of each pipeline and finally the output of each pipeline.
 
+#### Sequence
+This orchestrator allows us to better define the sequence of a pipeline. We can execute a `Transformer` with the data returned by another transformer or even indicate several of them.
+If a transformer depends on more than 1 `Transformer` or `Input` step, then in the "transform" method we will receive a tuple with each set of data.
+It also allows us to execute all Inputs in parallel to optimize the pipeline execution speed.
+
+The way to define the pipeline for this orchestrator is as follows:
+
+```python
+from cybertron_framework.orchestrator.types.sequence import SequenceOrchestrator
+
+pipeline_steps = [
+    {"id": "input1", "type": "input", "manager": InputBigqueryManager()},
+    {"id": "input2", "type": "input", "manager": InputPostgresManager()},
+    {"id": "transformer1", "type": "transformer", "manager": TransformerBigqueryManager(), "inputs": ["input1"]},
+    {"id": "transformer2", "type": "transformer", "manager": TransformerPostgresManager(), "inputs": ["input2"]},
+    {"id": "transformer3", "type": "transformer", "manager": FinalTransformerManager(), "inputs": ["transformer1", "transformer2"]},
+    {"id": "output1", "type": "output", "manager": FirstOutputManager(), "inputs": ["transformer3"]},
+]
+
+orchestrator = SequenceOrchestrator()
+orchestrator.run(pipeline_steps)
+```
+
 ---
 
 
