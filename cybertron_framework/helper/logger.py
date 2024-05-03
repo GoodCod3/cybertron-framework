@@ -12,16 +12,6 @@ class Logger:
     Logs messages to the stdout
     """
 
-    LOG_TYPE_WARNING = "WARNING"
-    LOG_TYPE_ERROR = "ERROR"
-    LOG_TYPE_CRITICAL = "CRITICAL"
-
-    LOGGER_MAP = {
-        LOG_TYPE_WARNING: logging.warning,
-        LOG_TYPE_ERROR: logging.error,
-        LOG_TYPE_CRITICAL: logging.critical,
-    }
-
     def info(self, message):
         return logging.info(message)
 
