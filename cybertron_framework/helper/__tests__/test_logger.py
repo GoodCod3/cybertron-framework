@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import patch
 
-from cybertron_framework.helper.logger import Logger
 from freezegun import freeze_time
+
+from cybertron_framework.helper.logger import Logger
 
 
 class TestLogger(unittest.TestCase):

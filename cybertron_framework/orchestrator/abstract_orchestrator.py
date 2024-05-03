@@ -1,7 +1,9 @@
 from cybertron_framework.helper.benchmark import Benchmark
 from cybertron_framework.helper.logger import Logger
 from cybertron_framework.input.input_manager_interface import IInputManager
-from cybertron_framework.orchestrator.orchestrator_interface import IOrchestrator  # noqa: E501
+from cybertron_framework.orchestrator.orchestrator_interface import (  # noqa: E501
+    IOrchestrator,
+)
 from cybertron_framework.output.output_manager_interface import IOutputManager
 from cybertron_framework.transformer.transformer_manager_interface import (
     ITransformerManager,

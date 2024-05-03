@@ -1,5 +1,8 @@
 import concurrent.futures
-from cybertron_framework.orchestrator.abstract_orchestrator import AbstractOrchestrator
+
+from cybertron_framework.orchestrator.abstract_orchestrator import (
+    AbstractOrchestrator,
+)
 
 
 class SequenceOrchestrator(AbstractOrchestrator):
@@ -7,8 +10,10 @@ class SequenceOrchestrator(AbstractOrchestrator):
         self.benchmark.start("total")
 
         input_data = self._process_parallel_inputs(pipeline_steps)
-        
-        transformer_outputs = self._process_transformers(pipeline_steps, input_data)
+
+        transformer_outputs = self._process_transformers(
+            pipeline_steps, input_data
+        )
 
         self._process_output(pipeline_steps, transformer_outputs)
 
@@ -34,7 +39,7 @@ class SequenceOrchestrator(AbstractOrchestrator):
         self.logger.info("Finished parallel input process.")
 
         return input_data
-    
+
     def _process_transformers(self, pipeline_steps, input_data):
         self.logger.info("Starting transformers process.")
         self.benchmark.start("transform")
@@ -47,10 +52,18 @@ class SequenceOrchestrator(AbstractOrchestrator):
                 transformer_manager = step["manager"]
                 input_ids = step.get("inputs", [])
 
-                inputs = [input_data[input_id] for input_id in input_ids if input_id in input_data]
+                inputs = [
+                    input_data[input_id]
+                    for input_id in input_ids
+                    if input_id in input_data
+                ]
 
                 if not inputs:
-                    inputs = [transformer_outputs[input_id] for input_id in input_ids if input_id in transformer_outputs]
+                    inputs = [
+                        transformer_outputs[input_id]
+                        for input_id in input_ids
+                        if input_id in transformer_outputs
+                    ]
 
                 # We execute the transformer when we have all data
                 if len(inputs) == len(input_ids):
@@ -74,16 +87,26 @@ class SequenceOrchestrator(AbstractOrchestrator):
                 transformer_manager = step["manager"]
                 input_ids = step["inputs"]
 
-                inputs = [input_data[input_id] for input_id in input_ids if input_id in input_data]
+                inputs = [
+                    input_data[input_id]
+                    for input_id in input_ids
+                    if input_id in input_data
+                ]
                 if len(inputs) > 0:
                     transformed_data = transformer_manager.transform(*inputs)
 
                     transformer_outputs[transformer_id] = transformed_data
                 else:
-                    transformers = [transformer_outputs[input_id] for input_id in input_ids if input_id in transformer_outputs]
-                    transformed_data = transformer_manager.transform(*transformers)
+                    transformers = [
+                        transformer_outputs[input_id]
+                        for input_id in input_ids
+                        if input_id in transformer_outputs
+                    ]
+                    transformed_data = transformer_manager.transform(
+                        *transformers
+                    )
                     transformer_outputs[transformer_id] = transformed_data
-                    
+
         self.elapsed_transform = self.benchmark.end("transform")
         self.logger.info("Finished transformers process.")
 
@@ -99,7 +122,11 @@ class SequenceOrchestrator(AbstractOrchestrator):
                 output_manager = step["manager"]
                 input_ids = step.get("inputs", [])
 
-                inputs = [transformer_outputs[input_id] for input_id in input_ids if input_id in transformer_outputs]
+                inputs = [
+                    transformer_outputs[input_id]
+                    for input_id in input_ids
+                    if input_id in transformer_outputs
+                ]
 
                 # Executing the output method
                 output_data = output_manager.put(*inputs)

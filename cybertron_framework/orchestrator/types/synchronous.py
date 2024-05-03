@@ -62,10 +62,10 @@ class Orchestrator(AbstractOrchestrator):
                 transformer_manager_id
             ]
 
-            transformed_data[transformer_manager.get_id()] = (
-                transformer_manager.transform(
-                    input_data[transformer_manager_id]
-                )
+            transformed_data[
+                transformer_manager.get_id()
+            ] = transformer_manager.transform(
+                input_data[transformer_manager_id]
             )
 
         self.elapsed_transform = self.benchmark.end("transform")
