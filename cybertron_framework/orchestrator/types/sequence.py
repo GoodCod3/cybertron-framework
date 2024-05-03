@@ -20,7 +20,7 @@ class SequenceOrchestrator(AbstractOrchestrator):
         self.elapsed_total = self.benchmark.end("total")
 
     def _process_parallel_inputs(self, pipeline_steps):
-        self.logger.info("Starting parallel input process.")
+        self.logger.info("Starting parallel input process (1/3).")
         self.benchmark.start("input")
 
         input_data = {}
@@ -41,7 +41,7 @@ class SequenceOrchestrator(AbstractOrchestrator):
         return input_data
 
     def _process_transformers(self, pipeline_steps, input_data):
-        self.logger.info("Starting transformers process.")
+        self.logger.info("Starting transformers process (2/3).")
         self.benchmark.start("transform")
 
         transformer_outputs = {}
@@ -75,45 +75,8 @@ class SequenceOrchestrator(AbstractOrchestrator):
 
         return transformer_outputs
 
-    def _process_transformers_bak(self, pipeline_steps, input_data):
-        self.logger.info("Starting transformers process.")
-        self.benchmark.start("transform")
-
-        transformer_outputs = {}
-
-        for step in pipeline_steps:
-            if step["type"] == "transformer":
-                transformer_id = step["id"]
-                transformer_manager = step["manager"]
-                input_ids = step["inputs"]
-
-                inputs = [
-                    input_data[input_id]
-                    for input_id in input_ids
-                    if input_id in input_data
-                ]
-                if len(inputs) > 0:
-                    transformed_data = transformer_manager.transform(*inputs)
-
-                    transformer_outputs[transformer_id] = transformed_data
-                else:
-                    transformers = [
-                        transformer_outputs[input_id]
-                        for input_id in input_ids
-                        if input_id in transformer_outputs
-                    ]
-                    transformed_data = transformer_manager.transform(
-                        *transformers
-                    )
-                    transformer_outputs[transformer_id] = transformed_data
-
-        self.elapsed_transform = self.benchmark.end("transform")
-        self.logger.info("Finished transformers process.")
-
-        return transformer_outputs
-
     def _process_output(self, pipeline_steps, transformer_outputs):
-        self.logger.info("Starting output process.")
+        self.logger.info("Starting output process (3/3).")
         self.benchmark.start("output")
 
         for step in pipeline_steps:
