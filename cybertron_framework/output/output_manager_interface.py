@@ -12,7 +12,7 @@ class IOutputManager:
         raise NotImplementedError
 
     @abstractmethod
-    def put(self, data):
+    def put(self, *data):
         """
         Puts the transformed data
         """

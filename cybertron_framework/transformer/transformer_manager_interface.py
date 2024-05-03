@@ -12,7 +12,7 @@ class ITransformerManager:
         raise NotImplementedError
 
     @abstractmethod
-    def transform(self, data):
+    def transform(self, *args):
         """
         Transforms the input data
         """
