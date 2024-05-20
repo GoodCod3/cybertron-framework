@@ -1,6 +1,7 @@
 import os
 
 import yaml
+
 from cybertron_framework.environment.environment_interface import IEnvironment
 
 DEFAULT_VARIABLE_VALUE = None
