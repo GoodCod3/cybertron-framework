@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cybertron_framework"
-version = "0.0.1"
+version = "0.0.2"
 description = "Cybertron is a framework intended for retrieving data from one or several repositories, transforming it, and storing in output repositories"
 authors = ["Making Science"]
 readme = "README.md"
